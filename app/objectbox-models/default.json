@@ -1,0 +1,71 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:5887130121763502441",
+      "lastPropertyId": "4:2462098844176965459",
+      "name": "BookEntity",
+      "properties": [
+        {
+          "id": "1:5592256130548866024",
+          "name": "id"
+        },
+        {
+          "id": "2:78891175028335903",
+          "name": "BookTitle"
+        },
+        {
+          "id": "3:1565488639833501401",
+          "name": "BookAuthor"
+        },
+        {
+          "id": "4:2462098844176965459",
+          "name": "creationDate"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:135097835218598621",
+      "lastPropertyId": "5:5453352202385316833",
+      "name": "SnippetEntity",
+      "properties": [
+        {
+          "id": "1:566411569429066461",
+          "name": "id"
+        },
+        {
+          "id": "2:6177318626520070118",
+          "name": "snippetName"
+        },
+        {
+          "id": "3:4415509795498219754",
+          "name": "snippetPageNo"
+        },
+        {
+          "id": "4:214898029904552448",
+          "name": "ImagePath"
+        },
+        {
+          "id": "5:5453352202385316833",
+          "indexId": "1:8637810995950217101",
+          "name": "BookId"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:135097835218598621",
+  "lastIndexId": "1:8637810995950217101",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 4,
+  "modelVersionParserMinimum": 4,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
