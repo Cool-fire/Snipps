@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.adev.root.snipps">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -37,11 +41,23 @@
             android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".Activities.SnippetActivity"
             android:label="@string/title_activity_snippet"
-            android:theme="@style/ActivityTheme"></activity>
+            android:theme="@style/ActivityTheme" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.adev.root.snipps.Activities.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity android:name=".Activities.CropActivity" />
+        <activity android:name=".Activities.AddSnippetActivity"></activity>
     </application>
 
 </manifest>

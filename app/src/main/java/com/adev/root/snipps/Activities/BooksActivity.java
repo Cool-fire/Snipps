@@ -25,6 +25,7 @@ import com.adev.root.snipps.view.BooksActivityView;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class BooksActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,BooksActivityView {
@@ -35,6 +36,7 @@ public class BooksActivity extends AppCompatActivity
     private BooksActivityView view;
     private BookAdapter mAdapter;
     private RecyclerView recyclerview;
+    private RealmResults<Book> sortedBooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +78,11 @@ public class BooksActivity extends AppCompatActivity
         recyclerview.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerview, new RecyclerTouchListener.Clicklistner() {
             @Override
             public void onclick(View view, int position) {
-                // Toast.makeText(getApplicationContext(),books.get(position).getBookAuthor(),Toast.LENGTH_SHORT).show();
-               Intent toSnippet = new Intent(getApplicationContext(),SnippetActivity.class);
-               toSnippet.putExtra("position",position);
-               startActivity(toSnippet);
+                String Title = sortedBooks.get(position).getBookTitle();
+                Intent toSnippet = new Intent(getApplicationContext(),SnippetActivity.class);
+                toSnippet.putExtra("position",Integer.toString(position));
+                toSnippet.putExtra("title",Title);
+                startActivity(toSnippet);
                 Log.d("TAG", "onclickit: "+position);
             }
 
@@ -103,7 +106,8 @@ public class BooksActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         books = getBooksList();
-        mAdapter = new BookAdapter(books);
+        sortedBooks = books.sort("creationDate", Sort.DESCENDING);
+        mAdapter = new BookAdapter(sortedBooks);
         recyclerview.setAdapter(mAdapter);
 
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,4 +8,43 @@
     tools:context=".Activities.SnippetActivity"
     tools:showIn="@layout/activity_snippet">
 
-</android.support.constraint.ConstraintLayout>
+    <com.github.clans.fab.FloatingActionMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        app:menu_colorNormal="@color/colorGreen"
+        app:menu_colorPressed="@color/colorGreen"
+        app:menu_colorRipple="@color/colorTeal"
+        app:menu_backgroundColor="@android:color/transparent"
+        app:menu_fab_label=""
+        app:menu_openDirection="up"
+        app:menu_showShadow="true"
+        app:menu_fab_hide_animation="@anim/fab_scale_down">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/camera_white"
+            app:fab_colorNormal="#F57F17"
+            app:fab_colorPressed="#F9A825"
+            app:fab_colorRipple="#FFEB3B"
+            app:fab_size="mini"
+            app:fab_label="Capture" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/browse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/image"
+            app:fab_colorNormal="#009688"
+            app:fab_colorPressed="@color/colorGreen"
+            app:fab_size="mini"
+            app:fab_label="browse" />
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+</RelativeLayout>

@@ -25,7 +25,7 @@ public class Snippet extends RealmObject {
         this.id = id;
         this.snippetName = snippetName;
         this.snippetPageNo = snippetPageNo;
-        ImagePath = imagePath;
+        this.ImagePath = imagePath;
     }
 
     public Snippet()

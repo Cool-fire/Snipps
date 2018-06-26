@@ -24,6 +24,8 @@
             android:id="@+id/BookTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="text"
             android:hint="@string/BookTitle" />
     </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
@@ -42,6 +44,8 @@
             android:id="@+id/bookAuthor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="text"
             android:hint="@string/BookAuthor"  />
     </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 

@@ -6,4 +6,8 @@
     <color name="colorGreen">#4CAF50</color>
     <color name="colorDarkGreen">#388E3C</color>
     <color name="colorTeal">#009688</color>
+
+    <color name="color_preloader_start">#ff56a9c7</color>
+    <color name="color_preloader_center">#ff56a9c7</color>
+    <color name="color_preloader_end">#ff56a9c7</color>
 </resources>

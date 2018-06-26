@@ -66,7 +66,25 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
         doneFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addBook();
+                 String BookTitle = Title.getText().toString();
+                 String BookAuthor = Author.getText().toString();
+
+                if(BookTitle.isEmpty() || BookAuthor.isEmpty())
+                {
+                    if(BookTitle.isEmpty())
+                    {
+                        Title.setError("Book Title Required");
+                    }
+                    if(BookAuthor.isEmpty())
+                    {
+                        Author.setError("Book Author Required");
+                    }
+                }
+                else
+                {
+                    addBook();
+                }
+
             }
         });
 
@@ -145,7 +163,7 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
             public void onSuccess() {
 
                 Toast.makeText(getApplicationContext(), "Succesfully added", Toast.LENGTH_SHORT).show();
-               // goBack();
+                goBack();
             }
         }, new Realm.Transaction.OnError() {
             @Override
@@ -242,7 +260,6 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
 
     @Override
     public void showNoInternet() {
-
 
         Toast.makeText(getApplicationContext(),"This action needs Internet",Toast.LENGTH_SHORT).show();
 

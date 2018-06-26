@@ -51,13 +51,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                 books.deleteFromRealm(position);
             }
         });
-
         notifyDataSetChanged();
         notifyItemRangeChanged(position,getItemCount());
     }
     public BookAdapter(RealmResults<Book> booksList) {
 
-        this.books = booksList.sort("creationDate", Sort.DESCENDING);
+        this.books = booksList;
     }
 
     @Override
