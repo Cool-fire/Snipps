@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,6 +13,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,12 +22,16 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.adev.root.snipps.R;
+import com.adev.root.snipps.adapters.RecyclerTouchListener;
+import com.adev.root.snipps.adapters.SnippetAdapter;
 import com.adev.root.snipps.model.entities.Book;
 import com.adev.root.snipps.model.entities.Snippet;
 import com.adev.root.snipps.presenter.SnippetActivityPresenter;
 import com.adev.root.snipps.view.SnippetActivityView;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,6 +44,7 @@ import io.realm.Sort;
 public class SnippetActivity extends AppCompatActivity implements SnippetActivityView{
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 10000;
+    private static final int RESULT_LOAD_IMG = 2222;
     private SnippetActivity view;
     private Context context;
     private SnippetActivityPresenter Snippetpresenter;
@@ -53,6 +61,9 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
     private RealmResults<Book> sortedBooks;
     private Book book;
     private RealmList<Snippet> snippetsList;
+    private RecyclerView recyclerview1;
+    private SnippetAdapter mAdapter;
+    private FloatingActionMenu fabmenu;
 
 
     @Override
@@ -64,7 +75,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
         BookTitle = getIntent().getStringExtra("title");
         BookPosition = getIntent().getStringExtra("position");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(BookTitle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -109,19 +120,61 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
                     }
                 }
                 else {
-
-
                     dispatchTakePictureIntent();
-
-
-
+                    fabmenu.close(true);
                 }
                 
                
             }
         });
 
+        galleryBttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent PhotoPickIntent = new Intent(Intent.ACTION_PICK);
+                PhotoPickIntent.setType("image/*");
+                startActivityForResult(PhotoPickIntent,RESULT_LOAD_IMG);
+                fabmenu.close(true);
+            }
+        });
 
+
+        recyclerview1 = (RecyclerView)findViewById(R.id.recycler_view);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerview1.setLayoutManager(layoutManager);
+
+
+        recyclerview1.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerview1, new RecyclerTouchListener.Clicklistner() {
+            @Override
+            public void onclick(View view, int position) {
+                Log.d("TAG", "onclick() returned: " +position );
+                toast(position);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                mAdapter.deleteBook(realm,position);
+            }
+
+            @Override
+            public void onDoubleTap(View view, int position) {
+
+            }
+        }));
+
+
+
+
+    }
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        mAdapter = new SnippetAdapter(book);
+        recyclerview1.setAdapter(mAdapter);
+    }
+    private void toast(int position) {
+        Toast.makeText(getApplicationContext(),String.valueOf(position),Toast.LENGTH_SHORT).show();
     }
 
     private void callForPermissions() {
@@ -135,6 +188,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
     private void setupviews() {
        cameraBttn = (com.github.clans.fab.FloatingActionButton)findViewById(R.id.camera);
        galleryBttn = (com.github.clans.fab.FloatingActionButton)findViewById(R.id.browse);
+       fabmenu = (FloatingActionMenu)findViewById(R.id.fabmenu);
     }
 
     @Override
@@ -176,7 +230,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir("Pictures/Snipps");
+        File storageDir = getExternalFilesDir("Pictures/Snipps/"+BookTitle+BookPosition);
         image = File.createTempFile(
                 imageFileName, ".jpg", storageDir
         );
@@ -198,12 +252,35 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
                 if(resultCode == RESULT_OK)
                 {
                     Intent intent = new Intent(SnippetActivity.this, CropActivity.class);
+                    intent.putExtra("booktitle",BookTitle);
                     intent.putExtra("position",BookPosition);
                     intent.putExtra("PhotoUri", photoURI);
                     intent.putExtra("photoPath",mCurrentPhotoPath.toString());
                     startActivity(intent);
                 }
 
+            }
+
+            case RESULT_LOAD_IMG:
+            {
+                if(resultCode == RESULT_OK)
+                {
+                    try {
+                        final Uri imageUri = data.getData();
+                        Intent intent = new Intent(SnippetActivity.this, CropActivity.class);
+                        intent.putExtra("booktitle",BookTitle);
+                        intent.putExtra("position",BookPosition);
+                        intent.putExtra("PhotoUri", imageUri);
+                        intent.putExtra("photoPath",imageUri.getPath());
+                        startActivity(intent);
+
+                        Log.d("TAG", "onActivityResult: "+imageUri.getPath());
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+
+                    }
+                }
             }
         }
     }

@@ -98,7 +98,9 @@ public class AddSnippetActivity extends AppCompatActivity {
                 }
                 else
                 {
+
                    addSnippetActivityPresenter.addSnippet(snippet_name,page_no,BookPosition,croppedPath);
+
                 }
 
             }
@@ -106,6 +108,18 @@ public class AddSnippetActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+
+
+        File file  = new File(croppedPath);
+        if(file.exists())
+        {
+            file.delete();
+        }
+        finish();
+        return super.onSupportNavigateUp();
+    }
 
     private void setupviews() {
         snippetname = (TextInputEditText)findViewById(R.id.snippetName);
@@ -140,7 +154,7 @@ public class AddSnippetActivity extends AppCompatActivity {
                 Log.d("TAG", "execute: "+book.getBookTitle());
                 snippet = realm.copyToRealmOrUpdate(snippet);
                 book.getSnippetsList().add(snippet);
-                Toast.makeText(getApplicationContext(),book.getBookTitle(),Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(getApplicationContext(),book.getBookTitle(),Toast.LENGTH_SHORT).show();
             }
         });
 
