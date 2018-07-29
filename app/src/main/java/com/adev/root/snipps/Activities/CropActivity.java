@@ -49,7 +49,7 @@ public class CropActivity extends AppCompatActivity {
         BookTitle = getIntent().getStringExtra("booktitle");
 
         String path = getIntent().getStringExtra("photoPath");
-        Toast.makeText(getApplicationContext(),path,Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getApplicationContext(),path,Toast.LENGTH_SHORT).show();
         imageFile = new File(path);
 
         setupviews();
@@ -71,7 +71,7 @@ public class CropActivity extends AppCompatActivity {
                 mCropView.saveAsync(croppedImageUri, mCropView.getCroppedBitmap(), new SaveCallback() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Toast.makeText(getApplicationContext(),"cropped",Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(getApplicationContext(),"cropped",Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
                         Intent intent = new Intent(CropActivity.this,AddSnippetActivity.class);
                         intent.putExtra("croppedPath",croppedImageFile.getPath());
@@ -95,7 +95,14 @@ public class CropActivity extends AppCompatActivity {
         rotateBttn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCropView.rotateImage(CropImageView.RotateDegrees.ROTATE_90D);
+                try
+                {
+                    mCropView.rotateImage(CropImageView.RotateDegrees.ROTATE_90D);
+                }
+                catch (Exception e)
+                {
+                    Log.d("Crop activity", "error rotating");
+                }
             }
         });
     }
@@ -141,7 +148,7 @@ public class CropActivity extends AppCompatActivity {
                 new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp+".jpg";
 
-        File mediaStorageDir = getExternalFilesDir("Pictures/Snipps/"+BookTitle+BookPosition);
+        File mediaStorageDir = getExternalFilesDir("Pictures/Snipps/");
 
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {

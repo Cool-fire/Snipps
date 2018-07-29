@@ -4,8 +4,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.adev.root.snipps.Activities.AddSnippetActivity;
+
 import com.adev.root.snipps.model.entities.Book;
 import com.adev.root.snipps.model.entities.Snippet;
+import com.squareup.otto.Bus;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -31,7 +33,7 @@ public class AddSnippetActivityPresenter {
         return books;
     }
 
-    public void addSnippet( final String snippet_name, final String page_no, final String bookPosition, final String croppedPath) {
+    public void addSnippet(final String snippet_name, final String page_no, final String bookPosition, final String croppedPath, final String date) {
 
 
         realm.executeTransactionAsync(new Realm.Transaction() {
@@ -53,6 +55,7 @@ public class AddSnippetActivityPresenter {
                 snippet.setImagePath(croppedPath);
                 snippet.setSnippetName(snippet_name);
                 snippet.setSnippetPageNo(Long.valueOf(page_no));
+                snippet.setDate(date);
                 Log.d("TAG", "execute: " + book.getBookTitle());
                 snippet = realm.copyToRealmOrUpdate(snippet);
                 book.getSnippetsList().add(snippet);
@@ -61,6 +64,7 @@ public class AddSnippetActivityPresenter {
             @Override
             public void onSuccess() {
                     Toast.makeText(view.getApplicationContext(),"Done",Toast.LENGTH_SHORT).show();
+                    view.sendMessage();
                     view.finish();
             }
         }, new Realm.Transaction.OnError() {
@@ -70,6 +74,8 @@ public class AddSnippetActivityPresenter {
             }
         });
     }
+
+
 
     private int getNextID(Number max) {
         int nextId ;

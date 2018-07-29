@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "257640421310",
+    "firebase_url": "https://snipps-2511.firebaseio.com",
+    "project_id": "snipps-2511",
+    "storage_bucket": "snipps-2511.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257640421310:android:aa4e070fbf931706",
+        "android_client_info": {
+          "package_name": "com.adev.root.snipps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257640421310-lmljnh9i4j6kncd6os2mokq15ibm403s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adev.root.snipps",
+            "certificate_hash": "cc37b8f25405d571856fc6eb1e1c9184d5529bc8"
+          }
+        },
+        {
+          "client_id": "257640421310-j0ocjijbase469cvg8asv4e1l5b14n8k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYudAyWQ58g33QuL18OR-kg8R_39Qse6o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257640421310-j0ocjijbase469cvg8asv4e1l5b14n8k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

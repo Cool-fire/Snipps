@@ -15,27 +15,19 @@ import android.widget.Toast;
 import com.adev.root.snipps.model.NewApiInterface;
 import com.adev.root.snipps.model.NewBookApiclient;
 import com.adev.root.snipps.model.NewBookModel;
-import com.adev.root.snipps.model.NewbookModelInterface;
-import com.adev.root.snipps.model.entities.BookEntity;
-import com.adev.root.snipps.model.entities.MyObjectBox;
 import com.adev.root.snipps.presenter.BarcodescannerPresenter;
 import com.adev.root.snipps.utils.Item;
 import com.adev.root.snipps.utils.NewBookUtil;
 import com.adev.root.snipps.view.BarcodescannerView;
-import com.google.zxing.Result;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.objectbox.Box;
-import io.objectbox.BoxStore;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.support.constraint.Constraints.TAG;
 
 public class BarcodeScannerActivity extends AppCompatActivity implements BarcodescannerView,ZBarScannerView.ResultHandler{
 
@@ -46,10 +38,6 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
     private BarcodescannerPresenter presenter;
     private List<Item> items  = new ArrayList<>();
     private NewBookUtil newBookUtil;
-    private BoxStore boxStore;
-    private Box<BookEntity> bookEntityBox;
-    private BoxStore mBoxStore;
-    private Box<BookEntity> bookEntityBox1;
     private ZBarScannerView mScanner;
     private Thread thread;
 

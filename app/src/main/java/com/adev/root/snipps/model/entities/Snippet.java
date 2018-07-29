@@ -7,6 +7,7 @@ import io.realm.annotations.PrimaryKey;
 
 public class Snippet extends RealmObject {
 
+    private String date;
     @PrimaryKey
     private long id;
 
@@ -21,11 +22,13 @@ public class Snippet extends RealmObject {
     private final RealmResults<Book> Book = null;
 
 
-    public Snippet(long id, String snippetName, long snippetPageNo, String imagePath) {
+
+    public Snippet(long id, String snippetName, long snippetPageNo, String imagePath, String date) {
         this.id = id;
         this.snippetName = snippetName;
         this.snippetPageNo = snippetPageNo;
         this.ImagePath = imagePath;
+        this.date = date;
     }
 
     public Snippet()
@@ -64,4 +67,13 @@ public class Snippet extends RealmObject {
     public void setImagePath(String imagePath) {
         ImagePath = imagePath;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
 }

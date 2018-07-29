@@ -32,5 +32,14 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="OpenActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimaryDark">@android:color/black</item>
+    </style>
+
+    <style name="OcrActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimaryDark">@color/yellowPrimaryDark</item>
+    </style>
 
 </resources>

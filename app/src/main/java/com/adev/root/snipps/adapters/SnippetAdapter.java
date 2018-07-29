@@ -1,5 +1,6 @@
 package com.adev.root.snipps.adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,11 +27,13 @@ public class SnippetAdapter extends RecyclerView.Adapter<SnippetAdapter.ViewHold
     private ImageView snippetImage;
     private ProgressBar snippetimageProgress;
     private File imageFile;
+    private Context context;
 
     @NonNull
     @Override
     public SnippetAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
+        context = parent.getContext();
         View ItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.snippetlist_row,parent,false);
         return new SnippetAdapter.ViewHolder(ItemView);
 
@@ -49,13 +52,14 @@ public class SnippetAdapter extends RecyclerView.Adapter<SnippetAdapter.ViewHold
             imageFile = new File(snippet.getImagePath().toString());
             if(imageFile.exists())
             {
-                Picasso.get().load(imageFile).resize(100,100).centerCrop().into(snippetImage);
+                Picasso.get().load(imageFile).resize(context.getResources().getDimensionPixelSize(R.dimen.snippet_thumb_width),
+                        context.getResources().getDimensionPixelSize(R.dimen.snippet_thumb_height)).centerCrop().into(snippetImage);
                 snippetimageProgress.setVisibility(View.INVISIBLE);
             }
         }
         catch (Exception e)
         {
-
+            Log.d(TAG, "onBindViewHolder: error");
         }
 
     }
@@ -69,6 +73,7 @@ public class SnippetAdapter extends RecyclerView.Adapter<SnippetAdapter.ViewHold
         });
         notifyDataSetChanged();
         notifyItemRangeChanged(position,getItemCount());
+
     }
     public SnippetAdapter(Book book) {
         this.book = book;

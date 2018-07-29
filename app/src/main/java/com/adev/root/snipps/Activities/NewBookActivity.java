@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,14 +15,12 @@ import android.widget.Toast;
 import com.adev.root.snipps.R;
 
 import com.adev.root.snipps.model.entities.Book;
-import com.adev.root.snipps.model.entities.BookEntity;
 import com.adev.root.snipps.presenter.NewBookPresenter;
 import com.adev.root.snipps.view.NewBookActivityView;
 
 import java.util.Date;
 
-import io.objectbox.Box;
-import io.objectbox.BoxStore;
+
 import io.realm.Realm;
 import io.realm.RealmAsyncTask;
 import io.realm.RealmResults;
@@ -35,11 +32,9 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
     private EditText Author,Title;
     private Context context;
     private FloatingActionButton barcodeFab;
-    private BoxStore mBoxStore;
+
     private NewBookActivityView view;
     private static NewBookActivity Sapp;
-    private BoxStore boxStore = null;
-    private Box<BookEntity> bookEntityBox;
     private RealmResults<Book> books;
     private RealmAsyncTask realmAsyncTaskTransaction;
     private Handler mHandler;
@@ -95,16 +90,6 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
                presenter.CheckForInternet();
             }
         });
-//        if(mBoxStore==null)
-//        {
-//            mBoxStore = MyObjectBox.builder().androidContext(NewBookActivity.this).build();
-//
-//        }
-//
-//
-//        boxStore = NewBookActivity.getApp().getBoxStore();
-//        bookEntityBox = boxStore.boxFor(BookEntity.class);
-
         mHandler = new Handler();
         Realm.init(this);
 
@@ -148,11 +133,6 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
 
 
                 int id = getNextID(presentId);
-
-//                Book book = realm.createObject(Book.class,id);
-//                book.setBookTitle(BookTitle);
-//                book.setBookAuthor(BookAuthor);
-//                book.setCreationDate(new Date());
                 book.setId(id);
                 Log.d(TAG, "execute: "+realm.where(Book.class).findAll());
                 realm.insertOrUpdate(book);
@@ -162,7 +142,7 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
             @Override
             public void onSuccess() {
 
-                Toast.makeText(getApplicationContext(), "Succesfully added", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getApplicationContext(), "Succesfully added", Toast.LENGTH_SHORT).show();
                 goBack();
             }
         }, new Realm.Transaction.OnError() {
@@ -172,15 +152,6 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
                 Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_SHORT).show();
             }
         });
-
-//        BookEntity Book = new BookEntity();
-//        Book.setBookAuthor(BookAuthor);
-//        Book.setBookTitle(BookTitle);
-//        Book.setCreationDate(new Date());
-//
-//        bookEntityBox.put(Book);
-//        Log.d(TAG, "addBook: id: "+Book.getId());
-//        Toast.makeText(getApplicationContext(),"Inserted Id :"+Book.getId(),Toast.LENGTH_SHORT).show();
     }
 
     private void goBack() {
@@ -246,10 +217,6 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
 
     }
 
-    public BoxStore getBoxStore()
-    {
-        return mBoxStore;
-    }
 
 
     @Override

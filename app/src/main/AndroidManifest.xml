@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_logo_round"
@@ -57,7 +57,17 @@
         </provider>
 
         <activity android:name=".Activities.CropActivity" />
-        <activity android:name=".Activities.AddSnippetActivity"></activity>
+        <activity android:name=".Activities.AddSnippetActivity" />
+        <activity
+            android:name=".Activities.OpenSnippetActivity"
+            android:theme="@style/OpenActivityTheme" />
+
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="ocr" />
+
+        <activity android:name=".Activities.OcrshowActivity"
+            android:theme="@style/OcrActivityTheme"/>
     </application>
 
 </manifest>
