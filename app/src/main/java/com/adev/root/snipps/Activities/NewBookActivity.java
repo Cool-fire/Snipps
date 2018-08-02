@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -38,6 +39,7 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
     private RealmResults<Book> books;
     private RealmAsyncTask realmAsyncTaskTransaction;
     private Handler mHandler;
+    private RealmAsyncTask RealmupdateTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +54,29 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
 
         view = this;
         Sapp = this;
+        Realm.init(this);
 
 
         context = getApplicationContext();
         final NewBookPresenter presenter = new NewBookPresenter(view,context);
+
+        // checking the Callingtype if it is update set the before Author,title
+        final Intent intent = getIntent();
+        final String CallingType = intent.getStringExtra("NewBookActivitytype");
+        if(CallingType!=null)
+        {
+
+            if(CallingType.equals("UpdateBook"))
+            {
+                final Realm realm = Realm.getDefaultInstance();
+                String id = intent.getStringExtra("updatebookId");
+                long bookId = Long.parseLong(id);
+                Book book = realm.where(Book.class).equalTo("id", bookId).findFirst();
+                Author.setText(book.getBookAuthor().toString());
+                Title.setText(book.getBookTitle().toString());
+            }
+
+        }
 
         FloatingActionButton doneFab = (FloatingActionButton) findViewById(R.id.fab);
         doneFab.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +98,21 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
                 }
                 else
                 {
-                    addBook();
+                    if(CallingType!=null)
+                    {
+
+                        if(CallingType.equals("UpdateBook"))
+                        {
+
+                            String id = intent.getStringExtra("updatebookId");
+                            long bookId = Long.parseLong(id);
+                            updateBook(bookId);
+                        }
+                        else
+                        {
+                            addBook(); // Normal original adding
+                        }
+                    }
                 }
 
             }
@@ -91,7 +126,43 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
             }
         });
         mHandler = new Handler();
-        Realm.init(this);
+
+
+
+
+    }
+
+    private void updateBook(final long bookId) {
+
+        final Realm realm = Realm.getDefaultInstance();
+        final String BookTitle = Title.getText().toString();
+        Log.d(TAG, "addBook: "+BookTitle);
+
+        final String BookAuthor = Author.getText().toString();
+        Log.d(TAG, "addBook: "+BookAuthor);
+
+        RealmupdateTransaction = realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Book book = realm.where(Book.class).equalTo("id", bookId).findFirst();
+                if (book == null) {
+                    book = realm.createObject(Book.class, bookId);
+                }
+                book.setBookTitle(BookTitle);
+                book.setBookAuthor(BookAuthor);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                goBack();
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
 
     }
@@ -102,6 +173,10 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
         if(realmAsyncTaskTransaction!=null && !realmAsyncTaskTransaction.isCancelled())
         {
             realmAsyncTaskTransaction.cancel();
+        }
+        if(RealmupdateTransaction!=null && !RealmupdateTransaction.isCancelled())
+        {
+            RealmupdateTransaction.cancel();
         }
     }
 
@@ -130,8 +205,6 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
             public void execute(Realm realm) {
 
                 presentId = realm.where(Book.class).max("id");
-
-
                 int id = getNextID(presentId);
                 book.setId(id);
                 Log.d(TAG, "execute: "+realm.where(Book.class).findAll());
@@ -148,7 +221,7 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
-                Log.d(TAG, "onError: "+error.getMessage());
+               // Log.d(TAG, "onError: "+error.getMessage());
                 Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_SHORT).show();
             }
         });
@@ -213,6 +286,10 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
         if(realmAsyncTaskTransaction!=null && !realmAsyncTaskTransaction.isCancelled())
         {
             realmAsyncTaskTransaction.cancel();
+        }
+        if(RealmupdateTransaction!=null && !RealmupdateTransaction.isCancelled())
+        {
+            RealmupdateTransaction.cancel();
         }
 
     }

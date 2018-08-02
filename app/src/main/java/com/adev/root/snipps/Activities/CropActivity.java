@@ -44,7 +44,7 @@ public class CropActivity extends AppCompatActivity {
         setContentView(R.layout.activity_crop);
 
         Intent intent = getIntent();
-        final Uri photoUri = getIntent().getParcelableExtra("PhotoUri");
+        Uri photoUri = getIntent().getParcelableExtra("PhotoUri");
         BookPosition = getIntent().getStringExtra("position");
         BookTitle = getIntent().getStringExtra("booktitle");
 
@@ -53,6 +53,10 @@ public class CropActivity extends AppCompatActivity {
         imageFile = new File(path);
 
         setupviews();
+        if(photoUri == null)
+        {
+            photoUri = Uri.fromFile(imageFile);
+        }
 
         Glide.with(this).load(photoUri).into(mCropView);
         mCropView.setHandleShowMode(CropImageView.ShowMode.SHOW_ALWAYS);

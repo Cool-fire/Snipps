@@ -9,6 +9,15 @@
     tools:layout_editor_absoluteY="81dp"
     tools:showIn="@layout/app_bar_books">
 
+    <ImageView
+        android:id="@+id/bookOutline"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/book_outline"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

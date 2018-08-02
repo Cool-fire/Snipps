@@ -52,7 +52,6 @@ public class AddSnippetActivity extends AppCompatActivity {
         croppedPath = intent.getStringExtra("croppedPath");
         BookPosition = intent.getStringExtra("position");
 
-      //  Toast.makeText(getApplicationContext(),BookPosition,Toast.LENGTH_SHORT).show();
 
         Realm.init(getApplicationContext());
         realm = Realm.getDefaultInstance();

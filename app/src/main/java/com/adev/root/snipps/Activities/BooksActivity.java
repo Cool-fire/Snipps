@@ -2,6 +2,7 @@ package com.adev.root.snipps.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Trace;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.adev.root.snipps.R;
@@ -47,6 +49,9 @@ public class BooksActivity extends AppCompatActivity implements NavigationView.O
     private String sortedTitle;
     private int Position;
     private DrawerLayout drawer;
+    private ImageView bookOutline;
+    private PopupMenu popup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class BooksActivity extends AppCompatActivity implements NavigationView.O
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), NewBookActivity.class);
+                intent.putExtra("NewBookActivitytype","NewBook");
                 startActivity(intent);
             }
         });
@@ -81,6 +87,7 @@ public class BooksActivity extends AppCompatActivity implements NavigationView.O
         presenter = new BooksActivityPresenter(view, realm);
 
         recyclerview = (RecyclerView) findViewById(R.id.recycler_view);
+        bookOutline = (ImageView)findViewById(R.id.bookOutline);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerview.setLayoutManager(layoutManager);
@@ -117,11 +124,22 @@ public class BooksActivity extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onStart() {
         super.onStart();
-        books = getBooksList();
-        sortedBooks = books.sort("creationDate", Sort.DESCENDING);
-        mAdapter = new BookAdapter(sortedBooks);
-        recyclerview.setAdapter(mAdapter);
+        try
+        {
+            books = getBooksList();
+            if(books.size()>0)
+            {
+                bookOutline.setVisibility(View.GONE);
+            }
+            sortedBooks = books.sort("creationDate", Sort.DESCENDING);
+            mAdapter = new BookAdapter(sortedBooks);
+            recyclerview.setAdapter(mAdapter);
 
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 
@@ -138,7 +156,7 @@ public class BooksActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.books, menu);
+       // getMenuInflater().inflate(R.menu.books, menu);
         return true;
     }
 
@@ -147,12 +165,12 @@ public class BooksActivity extends AppCompatActivity implements NavigationView.O
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -162,7 +180,7 @@ public class BooksActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+      int id = item.getItemId();
 
 //        if (id == R.id.nav_camera) {
 //            // Handle the camera action
@@ -190,12 +208,17 @@ public class BooksActivity extends AppCompatActivity implements NavigationView.O
 
 
     public void showPopup(View v) {
-        PopupMenu popup = new PopupMenu(this, v);
+        popup = new PopupMenu(this, v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.action_list, popup.getMenu());
-        popup.show();
-
-
+        if(drawer.isDrawerOpen(GravityCompat.START))
+        {
+            popup.dismiss();
+        }
+        else
+        {
+            popup.show();
+        }
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -203,11 +226,24 @@ public class BooksActivity extends AppCompatActivity implements NavigationView.O
                     case R.id.delete:
                         deleteItem();
                         return true;
+                    case R.id.edit:
+                        updateItem();
+                        return true;
                     default:
                         return false;
                 }
             }
         });
+    }
+
+    private void updateItem() {
+        Book book = sortedBooks.get(Position);
+        long id = book.getId();
+        Intent intent = new Intent(BooksActivity.this,NewBookActivity.class);
+        intent.putExtra("updatebookId",String.valueOf(id));
+        intent.putExtra("NewBookActivitytype","UpdateBook");
+        startActivity(intent);
+
     }
 
     private void deleteItem() {
@@ -227,7 +263,18 @@ public class BooksActivity extends AppCompatActivity implements NavigationView.O
             }
         }
         mAdapter.deleteBook(realm, Position);
-        Snackbar.make(drawer,"Snippet Deleted",Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(drawer,"Book Deleted",Snackbar.LENGTH_SHORT).show();
+        try
+        {
+            if(books.size()==0)
+            {
+                bookOutline.setVisibility(View.VISIBLE);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }

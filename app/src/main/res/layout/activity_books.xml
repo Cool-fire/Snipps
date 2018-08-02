@@ -19,6 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        android:background="@drawable/texture"
         app:headerLayout="@layout/nav_header_books"
         app:menu="@menu/activity_books_drawer" />
 

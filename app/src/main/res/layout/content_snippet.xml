@@ -56,4 +56,13 @@
 
     </com.github.clans.fab.FloatingActionMenu>
 
+    <ImageView
+        android:id="@+id/snippetOutline"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/snippet_outline"
+        />
+
 </RelativeLayout>

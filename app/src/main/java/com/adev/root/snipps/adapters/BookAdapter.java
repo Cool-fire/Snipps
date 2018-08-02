@@ -6,12 +6,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.adev.root.snipps.R;
 import com.adev.root.snipps.model.entities.Book;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -27,24 +31,33 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View ItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.booklist_row,parent,false);
+        View ItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.booklist_row, parent, false);
         return new ViewHolder(ItemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Book book = books.get(position);
-        holder.title.setText(book.getBookTitle());
-        holder.author.setText(book.getBookAuthor());
 
+        try {
+            Book book = books.get(position);
+            holder.title.setText(book.getBookTitle());
+            holder.author.setText(book.getBookAuthor());
+            int noOfSnippets = book.getSnippetsList().size();
+            holder.snippetNo.setText(Integer.toString(noOfSnippets));
+            SimpleDateFormat month_date = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+            String month_name = month_date.format(book.getCreationDate());
+            holder.bookDate.setText(month_name.toString());
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
 
     }
 
 
-    public void deleteBook(Realm realm, final int position)
-    {
+    public void deleteBook(Realm realm, final int position) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -52,8 +65,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             }
         });
         notifyDataSetChanged();
-        notifyItemRangeChanged(position,getItemCount());
+        notifyItemRangeChanged(position, getItemCount());
+
     }
+
     public BookAdapter(RealmResults<Book> booksList) {
 
         this.books = booksList;
@@ -68,12 +83,18 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         private final TextView title;
         private final TextView author;
         private final View ItemView;
+        private final TextView snippetNo;
+        private final TextView bookDate;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.ItemView = itemView;
-            title = (TextView)ItemView.findViewById(R.id.title);
-            author = (TextView)ItemView.findViewById(R.id.author);
+            title = (TextView) ItemView.findViewById(R.id.title);
+            author = (TextView) ItemView.findViewById(R.id.author);
+            snippetNo = (TextView) ItemView.findViewById(R.id.snippetsNumber);
+            bookDate = (TextView)ItemView.findViewById(R.id.bookDatecreation);
         }
     }
+
 }

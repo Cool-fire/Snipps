@@ -15,20 +15,24 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher_logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_logo_round"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".Activities.SplashActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".Activities.BooksActivity"
             android:label="@string/app_name"
             android:theme="@style/ActivityTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Activities.NewBookActivity"
@@ -66,8 +70,10 @@
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="ocr" />
 
-        <activity android:name=".Activities.OcrshowActivity"
-            android:theme="@style/OcrActivityTheme"/>
+        <activity
+            android:name=".Activities.OcrshowActivity"
+            android:theme="@style/OcrActivityTheme" />
+
     </application>
 
 </manifest>

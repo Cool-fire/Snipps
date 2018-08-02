@@ -29,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ActionMenuView;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -58,7 +59,7 @@ import io.realm.Sort;
 public class SnippetActivity extends AppCompatActivity implements SnippetActivityView{
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 10000;
-    private static final int RESULT_LOAD_IMG = 2222;
+    private static final int RESULT_LOAD_IMG = 22222;
     private SnippetActivity view;
     private Context context;
     private SnippetActivityPresenter Snippetpresenter;
@@ -81,6 +82,8 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
     private CoordinatorLayout coordinatorlayout;
     private Object busEventListener;
     private int Position;
+    private String mPhotoPathString;
+    private ImageView snippetOutlineImg;
 
 
     @Override
@@ -112,6 +115,11 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
         context = getApplicationContext();
         Snippetpresenter = new SnippetActivityPresenter(view, context);
 
+        if(savedInstanceState!=null)
+        {
+            mPhotoPathString = savedInstanceState.getString("imagePath");
+        }
+
         cameraBttn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,6 +142,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
                     }
                 }
                 else {
+                    Log.d("TAG", "onA: camera ");
                     dispatchTakePictureIntent();
                     fabmenu.close(true);
                 }
@@ -147,7 +156,9 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
             public void onClick(View view) {
                 Intent PhotoPickIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
               //  PhotoPickIntent.setType("image/*");
+                Log.d("TAG", "onA: gallery ");
                 startActivityForResult(PhotoPickIntent,RESULT_LOAD_IMG);
+                Log.d("TAG", "onA: galleryit ");
                 fabmenu.close(true);
             }
         });
@@ -203,6 +214,11 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
     protected void onStart() {
 
         super.onStart();
+        int noOfSnippets = book.getSnippetsList().size();
+        if(noOfSnippets>0)
+        {
+            snippetOutlineImg.setVisibility(View.GONE);
+        }
         mAdapter = new SnippetAdapter(book);
         recyclerview1.setAdapter(mAdapter);
 
@@ -225,6 +241,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
        galleryBttn = (com.github.clans.fab.FloatingActionButton)findViewById(R.id.browse);
        fabmenu = (FloatingActionMenu)findViewById(R.id.fabmenu);
        coordinatorlayout = (CoordinatorLayout)findViewById(R.id.coordinator);
+       snippetOutlineImg = (ImageView)findViewById(R.id.snippetOutline);
     }
 
     @Override
@@ -271,39 +288,54 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
                 imageFileName, ".jpg", storageDir
         );
         mCurrentPhotoPath = image.getAbsolutePath();
+        mPhotoPathString = mCurrentPhotoPath.toString();
         Log.d("TAG", "createImageFile: "+mCurrentPhotoPath);
         return image;
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("imagePath",mPhotoPathString);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode)
-        {
-            case REQUEST_TAKE_PHOTO :
+
+        Log.d("TAG", "onActivityResult: "+requestCode);
+
+            if(requestCode == REQUEST_TAKE_PHOTO)
             {
+
                 if(resultCode == RESULT_CANCELED)
                 {
-                    image.delete();
+                    try
+                    {
+                        image.delete();
+                    }
+                    catch (Exception e){}
+
                 }
                 if(resultCode == RESULT_OK)
                 {
-                    Intent intent = new Intent(SnippetActivity.this, CropActivity.class);
-                    intent.putExtra("booktitle",BookTitle);
-                    intent.putExtra("position",BookPosition);
-                    intent.putExtra("PhotoUri", photoURI);
-                    intent.putExtra("photoPath",mCurrentPhotoPath.toString());
-                    startActivity(intent);
+
+                        Intent intent = new Intent(SnippetActivity.this, CropActivity.class);
+                        intent.putExtra("booktitle",BookTitle);
+                        intent.putExtra("position",BookPosition);
+                        intent.putExtra("PhotoUri", photoURI);
+                        intent.putExtra("photoPath",mPhotoPathString);
+                        startActivity(intent);
+
                 }
 
             }
 
-            case RESULT_LOAD_IMG:
+            else if(requestCode == RESULT_LOAD_IMG)
             {
-                if(resultCode == RESULT_OK)
-                {
+
+
                     try {
                         final Uri imageUri = data.getData();
-                        Log.d("TAG", "onActivityReslt: "+imageUri);
                         Intent intent = new Intent(SnippetActivity.this, CropActivity.class);
                         intent.putExtra("booktitle",BookTitle);
                         intent.putExtra("position",BookPosition);
@@ -312,7 +344,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
                         File imageFile = new File(imagePath);
                         if(imageFile.exists())
                         {
-                            Toast.makeText(getApplicationContext(),"File loaded",Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(),"File loaded",Toast.LENGTH_SHORT).show();
                             intent.putExtra("photoPath",imagePath);
                             startActivity(intent);
                             Log.d("TAG", "onActivityResult: "+imageUri.getPath());
@@ -327,9 +359,9 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
                         e.printStackTrace();
 
                     }
-                }
+
             }
-        }
+
     }
 
     @Override
@@ -391,7 +423,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.action_list, popup.getMenu());
+        inflater.inflate(R.menu.delete_action_list, popup.getMenu());
         popup.show();
 
 
@@ -399,7 +431,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.delete:
+                    case R.id.snippetDelete:
                         deleteItem();
                         return true;
                     default:
@@ -410,16 +442,30 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
     }
 
     private void deleteItem() {
-        RealmList<Snippet> snippetslist = getSortedBooks();
-        Snippet snippet = snippetslist.get(Position);
-        String Imagepath = snippet.getImagePath();
-        File imageFile = new File(Imagepath);
-        if(imageFile.exists())
+
+        try
         {
-            imageFile.delete();
+            RealmList<Snippet> snippetslist = getSortedBooks();
+            Snippet snippet = snippetslist.get(Position);
+            String Imagepath = snippet.getImagePath();
+            File imageFile = new File(Imagepath);
+            if(imageFile.exists())
+            {
+                imageFile.delete();
+            }
+            mAdapter.deleteBook(realm,Position);
+            Snackbar.make(coordinatorlayout,"Snippet Deleted",Snackbar.LENGTH_SHORT).show();
+            int noOfSnippets = book.getSnippetsList().size();
+            if(noOfSnippets==0)
+            {
+                snippetOutlineImg.setVisibility(View.VISIBLE);
+            }
         }
-        mAdapter.deleteBook(realm,Position);
-        Snackbar.make(coordinatorlayout,"Snippet Deleted",Snackbar.LENGTH_SHORT).show();
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
 }
