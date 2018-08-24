@@ -56,6 +56,9 @@ public class OpenSnippetActivity extends AppCompatActivity {
     private RelativeLayout snippetDetailsView;
     private Toolbar toolbar;
     private ProgressBar progressDialog;
+    private FloatingActionButton drawImageButton;
+    private String position;
+    private String BookId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +66,8 @@ public class OpenSnippetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_open_snippet);
 
            Intent intent = getIntent();
-           String position =  intent.getStringExtra("snippetPosition");
-           String BookId = intent.getStringExtra("bookId");
+           position =  intent.getStringExtra("snippetPosition");
+           BookId = intent.getStringExtra("bookId");
 
         Realm.init(getApplicationContext());
 
@@ -78,7 +81,7 @@ public class OpenSnippetActivity extends AppCompatActivity {
         }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        Log.d(TAG, "onCreate: "+snippet.getSnippetName());
+       // Log.d(TAG, "onCreate: "+snippet.getSnippetName());
         toolbar.setTitle(bookTitle);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
@@ -105,6 +108,19 @@ public class OpenSnippetActivity extends AppCompatActivity {
                 SetupOcr();
             }
         });
+        drawImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawOnImage();
+            }
+        });
+    }
+
+    private void drawOnImage() {
+            Intent drawingIntent = new Intent(OpenSnippetActivity.this,DrawImageActivity.class);
+            drawingIntent.putExtra("snippetPosition",position);
+            drawingIntent.putExtra("bookId",BookId);
+            startActivity(drawingIntent);
     }
 
     private void SetupOcr() {
@@ -163,6 +179,7 @@ public class OpenSnippetActivity extends AppCompatActivity {
         snippetDetailsView = (RelativeLayout)findViewById(R.id.snippetDetailsView);
         OcrButton = (FloatingActionButton)findViewById(R.id.ocr);
         progressDialog = (ProgressBar)findViewById(R.id.progressDialog);
+        drawImageButton = (FloatingActionButton)findViewById(R.id.draw_image);
         snippetImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

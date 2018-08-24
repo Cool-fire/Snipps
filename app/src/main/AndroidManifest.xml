@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.adev.root.snipps">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -19,21 +20,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-
-        <activity android:name=".Activities.SplashActivity"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+        <activity
+            android:name=".Activities.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activities.BooksActivity"
             android:label="@string/app_name"
-            android:theme="@style/ActivityTheme">
-        </activity>
+            android:theme="@style/ActivityTheme"></activity>
         <activity
             android:name=".Activities.NewBookActivity"
             android:label="@string/title_activity_new_book"
@@ -73,7 +74,8 @@
         <activity
             android:name=".Activities.OcrshowActivity"
             android:theme="@style/OcrActivityTheme" />
-
+        <activity android:name=".Activities.DrawImageActivity"
+            android:theme="@style/OpenActivityTheme"/>
     </application>
 
 </manifest>

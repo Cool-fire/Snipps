@@ -22,9 +22,8 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_marginBottom="100dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
@@ -137,7 +136,21 @@
             app:fab_label="ocr"
             app:fab_size="mini" />
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/draw_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            app:menu_colorNormal="@color/colorGreen"
+            app:menu_colorPressed="@color/colorGreen"
+            app:menu_colorRipple="@color/colorTeal"
+            app:menu_backgroundColor="@android:color/transparent"
+            app:fab_label="draw"
+            app:fab_size="mini" />
+
     </com.github.clans.fab.FloatingActionMenu>
+
+
 
 
 </android.support.constraint.ConstraintLayout>

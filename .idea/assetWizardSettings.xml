@@ -96,7 +96,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/usr/local/android-studio-ide-171.4443003-linux/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_rotate_right_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/usr/local/android-studio-ide-171.4443003-linux/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_edit_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -106,14 +106,11 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
                             <entry key="autoMirrored" value="true" />
                             <entry key="color" value="ffffff" />
-                            <entry key="height" value="327" />
-                            <entry key="outputName" value="ic_logofigm" />
+                            <entry key="outputName" value="ic_edit" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="$PROJECT_DIR$/../logofigm.svg" />
-                            <entry key="width" value="262" />
                           </map>
                         </option>
                       </PersistentState>
