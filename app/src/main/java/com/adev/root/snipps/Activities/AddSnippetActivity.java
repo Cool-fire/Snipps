@@ -16,8 +16,6 @@ import com.adev.root.snipps.R;
 import com.adev.root.snipps.model.entities.Book;
 import com.adev.root.snipps.model.entities.Snippet;
 import com.adev.root.snipps.presenter.AddSnippetActivityPresenter;
-import com.bumptech.glide.Glide;
-import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

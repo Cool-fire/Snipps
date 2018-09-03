@@ -75,6 +75,7 @@
             android:name=".Activities.OcrshowActivity"
             android:theme="@style/OcrActivityTheme" />
         <activity android:name=".Activities.DrawImageActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/OpenActivityTheme"/>
     </application>
 

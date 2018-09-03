@@ -34,15 +34,13 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="22dp"
-            android:layout_marginEnd="12dp"
-            android:text="Button" />
+        <com.github.veritas1.verticalslidecolorpicker.VerticalSlideColorPicker
+            android:id="@+id/color_picker"
+            android:layout_width="15sp"
+            android:layout_height="400sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:visibility="invisible"/>
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

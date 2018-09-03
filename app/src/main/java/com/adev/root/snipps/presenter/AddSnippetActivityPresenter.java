@@ -7,7 +7,6 @@ import com.adev.root.snipps.Activities.AddSnippetActivity;
 
 import com.adev.root.snipps.model.entities.Book;
 import com.adev.root.snipps.model.entities.Snippet;
-import com.squareup.otto.Bus;
 
 import io.realm.Realm;
 import io.realm.RealmList;

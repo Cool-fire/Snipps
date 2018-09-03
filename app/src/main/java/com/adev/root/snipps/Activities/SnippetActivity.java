@@ -41,10 +41,7 @@ import com.adev.root.snipps.model.entities.Snippet;
 import com.adev.root.snipps.presenter.SnippetActivityPresenter;
 import com.adev.root.snipps.view.SnippetActivityView;
 import com.github.clans.fab.FloatingActionMenu;
-import com.google.gson.Gson;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
-import com.squareup.otto.ThreadEnforcer;
+
 
 import java.io.File;
 import java.io.IOException;
