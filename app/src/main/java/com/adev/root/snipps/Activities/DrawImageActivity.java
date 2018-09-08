@@ -1,9 +1,12 @@
 package com.adev.root.snipps.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.support.v4.content.res.ResourcesCompat;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,15 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.adev.root.snipps.R;
 import com.adev.root.snipps.model.entities.Book;
 import com.adev.root.snipps.model.entities.Snippet;
 import com.github.veritas1.verticalslidecolorpicker.VerticalSlideColorPicker;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.File;
 
@@ -29,7 +29,6 @@ import io.realm.RealmList;
 import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
-import ja.burhanrashid52.photoeditor.PhotoFilter;
 import ja.burhanrashid52.photoeditor.ViewType;
 
 public class DrawImageActivity extends AppCompatActivity implements OnPhotoEditorListener {
@@ -50,6 +49,9 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
     private Typeface emojiTypeface;
     private Menu menu;
     private boolean Toggle = false;
+    private Drawable DrawWrappedIcon;
+    private Button undoBttn;
+    private MenuItem Undoitem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +103,15 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
     }
 
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(DrawWrappedIcon!=null)
+        {
+            DrawableCompat.setTint(DrawWrappedIcon,getResources().getColor(R.color.colorWhite));
+        }
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,33 +122,54 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
-        case R.id.draw:
-            changeIcon();
-            callforChange();
-            return(true);
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Undoitem = menu.findItem(R.id.undo);
+        switch(item.getItemId()) {
+            case R.id.draw:
+                    MenuItem Drawitem = menu.findItem(R.id.draw);
+                    changeIcon();
+                    DrawWrappedIcon = tintMenuIcon(getApplicationContext(),Drawitem);
+                    return(true);
+            case android.R.id.home:
+                this.finish();
+            case R.id.undo:
+                mPhotoEditor.undo();
+
+
     }
         return(super.onOptionsItemSelected(item));
     }
+
+
 
     private void changeIcon() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (menu != null) {
-                    MenuItem item = menu.findItem(R.id.draw);
-                    if (item != null) {
+                    MenuItem Drawitem = menu.findItem(R.id.draw);
+                    if (Drawitem != null) {
 
-                        if(Toggle == false)
+                        if(!Toggle)
                         {
                             Toggle = true;
-                            item.setIcon(R.drawable.ic_edit_color);
+                            mPhotoEditor.setBrushDrawingMode(true);
+                            intializeDrawing();
                             colorPicker.setVisibility(View.VISIBLE);
                         }
-                        else if(Toggle == true)
+                        else if(Toggle)
                         {
                             Toggle = false;
-                            item.setIcon(R.drawable.ic_edit);
+                            mPhotoEditor.setBrushDrawingMode(false);
+                            if(DrawWrappedIcon!=null)
+                            {
+                                DrawableCompat.setTint(DrawWrappedIcon, getResources().getColor(R.color.colorWhite));
+                            }
+                            else
+                            {
+                                Drawitem.setIcon(R.drawable.ic_edit);
+                            }
                             colorPicker.setVisibility(View.GONE);
                         }
                     }
@@ -147,24 +178,43 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
         });
     }
 
-    private void callforChange() {
+    public static Drawable tintMenuIcon(Context context, MenuItem item) {
+        Drawable normalDrawable = item.getIcon();
+        Drawable wrapDrawable = DrawableCompat.wrap(normalDrawable);
+        item.setIcon(wrapDrawable);
+        return wrapDrawable;
+    }
 
+    private void intializeDrawing() {
 
-
-        mPhotoEditor.setBrushDrawingMode(true);
         mPhotoEditor.setBrushColor(colorPicker.intialColor());
+        if(DrawWrappedIcon!=null)
+        {
+            DrawableCompat.setTint(DrawWrappedIcon,colorPicker.intialColor());
+        }
         colorPicker.setOnColorChangeListener(new VerticalSlideColorPicker.OnColorChangeListener() {
             @Override
             public void onColorChange(int selectedColor) {
                 SelectedColor = selectedColor;
                 mPhotoEditor.setBrushColor(SelectedColor);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(DrawWrappedIcon!=null)
+                        {
+                            DrawableCompat.setTint(DrawWrappedIcon,SelectedColor);
+                        }
+                    }
+                });
             }
         });
 
     }
 
+
     private void setupViews() {
         drawImageview = findViewById(R.id.drawImageView);
+
     }
 
     @Override
@@ -174,12 +224,22 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
 
     @Override
     public void onAddViewListener(ViewType viewType, int numberOfAddedViews) {
-
+        if(numberOfAddedViews>0)
+        {
+            Undoitem.setVisible(true);
+        }
+        else
+        {
+            Undoitem.setVisible(false);
+        }
     }
 
     @Override
     public void onRemoveViewListener(int numberOfAddedViews) {
-
+        if(numberOfAddedViews == 0)
+        {
+            Undoitem.setVisible(false);
+        }
     }
 
     @Override

@@ -139,7 +139,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
                     }
                 }
                 else {
-                    Log.d("TAG", "onA: camera ");
+                  //  Log.d("TAG", "onA: camera ");
                     dispatchTakePictureIntent();
                     fabmenu.close(true);
                 }
