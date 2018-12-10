@@ -76,6 +76,7 @@
             android:theme="@style/OcrActivityTheme" />
         <activity android:name=".Activities.DrawImageActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/OpenActivityTheme"/>
     </application>
 

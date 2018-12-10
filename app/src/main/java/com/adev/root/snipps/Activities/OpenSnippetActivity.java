@@ -30,6 +30,7 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextDetector;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -91,7 +92,7 @@ public class OpenSnippetActivity extends AppCompatActivity {
 
         setupviews();
         ImageFile = new File(snippet.getImagePath());
-        Picasso.get().load(ImageFile).resize(1500,1500).centerInside().into(snippetImage);
+        Picasso.get().load(ImageFile).memoryPolicy(MemoryPolicy.NO_CACHE).resize(1500,1500).centerInside().into(snippetImage);
         snippetName.setText(snippet.getSnippetName());
         snippetPage.setText(String.valueOf(snippet.getSnippetPageNo()));
         try
@@ -114,6 +115,14 @@ public class OpenSnippetActivity extends AppCompatActivity {
                 drawOnImage();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        File newImageFile = new File(snippet.getImagePath());
+        Picasso.get().load(newImageFile).memoryPolicy(MemoryPolicy.NO_CACHE).resize(1500,1500).centerInside().into(snippetImage);
+//        Picasso.get().invalidate(newImageFile);
     }
 
     private void drawOnImage() {

@@ -15,4 +15,8 @@
     <string name="title_activity_new_snippet">NewSnippetActivity</string>
     <string name="title_activity_snippet">SnippetActivity</string>
     <string name="draw">draw</string>
+    <string name="sure">Are you sure?</string>
+    <string name="overwritesnippet">This will permanently overwrite the original snippet</string>
+    <string name="save">save</string>
+    <string name="cancel">cancel</string>
 </resources>

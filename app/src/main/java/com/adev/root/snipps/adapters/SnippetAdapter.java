@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.adev.root.snipps.R;
 import com.adev.root.snipps.model.entities.Book;
 import com.adev.root.snipps.model.entities.Snippet;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -52,7 +53,7 @@ public class SnippetAdapter extends RecyclerView.Adapter<SnippetAdapter.ViewHold
             imageFile = new File(snippet.getImagePath().toString());
             if(imageFile.exists())
             {
-                Picasso.get().load(imageFile).resize(context.getResources().getDimensionPixelSize(R.dimen.snippet_thumb_width),
+                Picasso.get().load(imageFile).memoryPolicy(MemoryPolicy.NO_CACHE).resize(context.getResources().getDimensionPixelSize(R.dimen.snippet_thumb_width),
                         context.getResources().getDimensionPixelSize(R.dimen.snippet_thumb_height)).centerCrop().into(snippetImage);
                 snippetimageProgress.setVisibility(View.INVISIBLE);
             }

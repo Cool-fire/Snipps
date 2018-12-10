@@ -12,5 +12,6 @@
     <color name="color_preloader_end">#ff56a9c7</color>
 
     <color name="colorWhite">#ffffff</color>
+    <color name="transparent_black">#a34b4949</color>
     <color name="yellowPrimaryDark">#ffd54f</color>
 </resources>

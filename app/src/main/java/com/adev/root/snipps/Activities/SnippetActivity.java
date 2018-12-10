@@ -221,6 +221,21 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
 
     }
 
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        int noOfSnippets = book.getSnippetsList().size();
+        if(noOfSnippets>0)
+        {
+            snippetOutlineImg.setVisibility(View.GONE);
+        }
+        mAdapter = new SnippetAdapter(book);
+        recyclerview1.setAdapter(mAdapter);
+
+    }
+
+
 
 
 

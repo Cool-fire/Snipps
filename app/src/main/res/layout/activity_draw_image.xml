@@ -18,29 +18,48 @@
         android:background="@android:color/transparent" />
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/relateLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
         android:layout_marginTop="8dp"
+        android:fillViewport="true"
+        android:fadingEdge="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_black">
 
-        <ja.burhanrashid52.photoeditor.PhotoEditorView
-            android:id="@+id/drawImageView"
+
+
+
+            <ja.burhanrashid52.photoeditor.PhotoEditorView
+                android:id="@+id/drawImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true" />
+
+            <com.github.veritas1.verticalslidecolorpicker.VerticalSlideColorPicker
+                android:id="@+id/color_picker"
+                android:layout_width="15sp"
+                android:layout_height="400sp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="20dp"
+                android:visibility="invisible" />
+        <EditText
+            android:id="@+id/add_text_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:background="@color/transparent_black"
+            android:gravity="center"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            android:layout_alignParentBottom="true"/>
 
-        <com.github.veritas1.verticalslidecolorpicker.VerticalSlideColorPicker
-            android:id="@+id/color_picker"
-            android:layout_width="15sp"
-            android:layout_height="400sp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="20dp"
-            android:visibility="invisible"/>
     </RelativeLayout>
+
 
 </android.support.constraint.ConstraintLayout>
