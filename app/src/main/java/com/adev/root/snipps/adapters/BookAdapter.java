@@ -90,10 +90,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
             this.ItemView = itemView;
-            title = (TextView) ItemView.findViewById(R.id.title);
-            author = (TextView) ItemView.findViewById(R.id.author);
-            snippetNo = (TextView) ItemView.findViewById(R.id.snippetsNumber);
-            bookDate = (TextView)ItemView.findViewById(R.id.bookDatecreation);
+            title = ItemView.findViewById(R.id.title);
+            author = ItemView.findViewById(R.id.author);
+            snippetNo = ItemView.findViewById(R.id.snippetsNumber);
+            bookDate = ItemView.findViewById(R.id.bookDatecreation);
         }
     }
 

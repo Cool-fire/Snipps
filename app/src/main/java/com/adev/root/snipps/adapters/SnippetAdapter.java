@@ -60,7 +60,7 @@ public class SnippetAdapter extends RecyclerView.Adapter<SnippetAdapter.ViewHold
         }
         catch (Exception e)
         {
-            Log.d(TAG, "onBindViewHolder: error");
+            e.printStackTrace();
         }
 
     }
@@ -94,10 +94,10 @@ public class SnippetAdapter extends RecyclerView.Adapter<SnippetAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
-            snippetName =(TextView)itemView.findViewById(R.id.snippetNames);
-            snippetPage = (TextView)itemView.findViewById(R.id.snippetPageNumber);
-            snippetImage = (ImageView)itemView.findViewById(R.id.Snippetimage);
-            snippetimageProgress = (ProgressBar)itemView.findViewById(R.id.progressBarId);
+            snippetName = itemView.findViewById(R.id.snippetNames);
+            snippetPage = itemView.findViewById(R.id.snippetPageNumber);
+            snippetImage = itemView.findViewById(R.id.Snippetimage);
+            snippetimageProgress = itemView.findViewById(R.id.progressBarId);
 
         }
     }

@@ -17,25 +17,27 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:animateLayoutChanges="true"
+        android:theme="@style/ToolbarTheme"
         />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toTopOf="@+id/toolbar">
 
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/snippetIMG"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:fitsSystemWindows="true"
-            />
+            android:fitsSystemWindows="true" />
+
         <ProgressBar
             android:id="@+id/progressDialog"
             style="?android:attr/progressBarStyleLarge"
@@ -43,9 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:visibility="gone"
-            >
-        </ProgressBar>
+            android:visibility="gone"></ProgressBar>
 
     </RelativeLayout>
 
@@ -128,6 +128,18 @@
         app:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/write_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_description"
+            app:fab_colorNormal="@color/bluePrimaryDark"
+            app:fab_colorPressed="@color/blueColor"
+            app:fab_colorRipple="@color/blueColor"
+            app:menu_backgroundColor="@android:color/transparent"
+            app:fab_label="notes"
+            app:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/ocr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -143,12 +155,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_edit"
-            app:menu_colorNormal="@color/colorGreen"
-            app:menu_colorPressed="@color/colorGreen"
-            app:menu_colorRipple="@color/colorTeal"
+            app:fab_colorNormal="@color/colorGreen"
+            app:fab_colorPressed="@color/colorGreen"
+            app:fab_colorRipple="@color/colorTeal"
             app:menu_backgroundColor="@android:color/transparent"
             app:fab_label="draw"
             app:fab_size="mini" />
+
 
     </com.github.clans.fab.FloatingActionMenu>
 

@@ -45,12 +45,12 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_book);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.newBook);
 
-        Author = (EditText)findViewById(R.id.bookAuthor);
-        Title = (EditText)findViewById(R.id.BookTitle);
+        Author = findViewById(R.id.bookAuthor);
+        Title = findViewById(R.id.BookTitle);
 
         view = this;
         Sapp = this;
@@ -78,7 +78,7 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
 
         }
 
-        FloatingActionButton doneFab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton doneFab = findViewById(R.id.fab);
         doneFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,7 +118,7 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
             }
         });
 
-       barcodeFab = (FloatingActionButton)findViewById(R.id.fab2);
+       barcodeFab = findViewById(R.id.fab2);
         barcodeFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,10 +185,7 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
 
         final Realm realm = Realm.getDefaultInstance();
         final String BookTitle = Title.getText().toString();
-        Log.d(TAG, "addBook: "+BookTitle);
-
         final String BookAuthor = Author.getText().toString();
-        Log.d(TAG, "addBook: "+BookAuthor);
 
         final Book book = new Book();
         book.setBookAuthor(BookAuthor);

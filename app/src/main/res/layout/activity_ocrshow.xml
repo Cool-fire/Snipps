@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.OcrshowActivity"
-    android:background="#FFF9C8">
+    android:background="#FFF9C8"
+    android:focusableInTouchMode="true"
+    android:focusable="true">
 
     <android.support.v7.widget.Toolbar
 
@@ -20,12 +22,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <EditText xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="top"
         android:padding="5dp"
+        android:background="@android:color/transparent"
         android:lineSpacingMultiplier="1.5"
         android:scrollbars="vertical"
         android:textSize="15sp"

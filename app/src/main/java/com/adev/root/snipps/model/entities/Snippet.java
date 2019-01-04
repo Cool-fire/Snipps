@@ -17,6 +17,8 @@ public class Snippet extends RealmObject {
 
     private String ImagePath;
 
+    private String notes;
+
 
     @LinkingObjects("snippetsList")
     private final RealmResults<Book> Book = null;
@@ -76,4 +78,11 @@ public class Snippet extends RealmObject {
         this.date = date;
     }
 
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 }

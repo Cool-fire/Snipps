@@ -112,10 +112,10 @@ public class CropActivity extends AppCompatActivity {
     }
 
     private void setupviews() {
-        mCropView = (CropImageView) findViewById(R.id.cropImageView);
-        doneFabBttn = (FloatingActionButton)findViewById(R.id.doneBTN);
-        rotateBttn = (FloatingActionButton)findViewById(R.id.rotateImageBTN);
-        progressBar = (ProgressBar)findViewById(R.id.progressBarDialog);
+        mCropView = findViewById(R.id.cropImageView);
+        doneFabBttn = findViewById(R.id.doneBTN);
+        rotateBttn = findViewById(R.id.rotateImageBTN);
+        progressBar = findViewById(R.id.progressBarDialog);
     }
 
     @Override

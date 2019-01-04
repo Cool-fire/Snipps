@@ -13,23 +13,29 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adev.root.snipps.R;
 
 public class OcrshowActivity extends AppCompatActivity {
 
-    private TextView TextField;
+    private EditText TextField;
     private Toolbar toolbar;
+    private Menu menu;
+    private String recognisedText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ocrshow);
         Intent intent = getIntent();
-        String RecognisedText = intent.getStringExtra("RecognisedText");
+        recognisedText = intent.getStringExtra("RecognisedText");
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Recognised Text");
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
@@ -39,18 +45,48 @@ public class OcrshowActivity extends AppCompatActivity {
 
 
         setupviews();
-        TextField.setText(RecognisedText);
+        TextField.setText(recognisedText);
         TextField.setMovementMethod(new ScrollingMovementMethod());
         TextField.setTextIsSelectable(true);
     }
 
     private void setupviews() {
-        TextField =  (TextView)findViewById(R.id.body);
+        TextField = findViewById(R.id.body);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         finish();
         return super.onSupportNavigateUp();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.open_snippet_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.snippetMenu:
+                String text = TextField.getText().toString();
+                Intent sendIntent = new Intent();
+                sendIntent.setType("text/plain");
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,text);
+                if (sendIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(sendIntent);
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"Sorry Can't share ",Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

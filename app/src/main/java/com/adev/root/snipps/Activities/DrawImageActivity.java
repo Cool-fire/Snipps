@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ import com.adev.root.snipps.model.entities.Book;
 import com.adev.root.snipps.model.entities.Snippet;
 import com.adev.root.snipps.utils.Utility;
 import com.github.veritas1.verticalslidecolorpicker.VerticalSlideColorPicker;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -57,6 +59,7 @@ import static android.view.View.INVISIBLE;
 
 public class DrawImageActivity extends AppCompatActivity implements OnPhotoEditorListener {
 
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 199;
     private Toolbar toolbar;
     private String position;
     private String BookId;
@@ -82,6 +85,7 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
     private ScrollView sv;
     private String saveTag;
     private Context context;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -113,7 +117,7 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
 
                     AddTextonImage(inputTextEt.getText().toString());
-                    Utility.hideSoftKeyboard((Activity) DrawImageActivity.this);
+                    Utility.hideSoftKeyboard(DrawImageActivity.this);
                     inputTextEt.setVisibility(INVISIBLE);
                 }
                 return false;
@@ -139,7 +143,7 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
         colorPicker = findViewById(R.id.color_picker);
 
         mPhotoEditor.setOnPhotoEditorListener(this);
-        Picasso.get().load(ImageFile).into(drawImageview.getSource());
+        Picasso.get().load(ImageFile).memoryPolicy(MemoryPolicy.NO_CACHE).into(drawImageview.getSource());
 
 
     }
@@ -197,31 +201,27 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
     private void savePopup() {
         saveDialog();
         saveTag = "saveTag";
-       // dialog.show(manager, saveTag);
     }
 
     private void saveDialog() {
         AlertDialog.Builder builder;
         context = getApplicationContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(DrawImageActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+            builder = new AlertDialog.Builder(DrawImageActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar);
         } else {
             builder = new AlertDialog.Builder(DrawImageActivity.this);
         }
-        builder.setMessage(R.string.overwritesnippet)
-                .setTitle(R.string.sure)
-                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        save();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+        builder.setMessage(R.string.overwritesnippet).setTitle(R.string.sure).setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                save();
+            }
+        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
 
-                    }
-                });
+            }
+        });
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -246,20 +246,19 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
     }
 
     private void hidetext() {
-        Utility.hideSoftKeyboard((Activity) DrawImageActivity.this);
+        Utility.hideSoftKeyboard(DrawImageActivity.this);
         inputTextEt.setVisibility(INVISIBLE);
     }
 
     private void addtext() {
         inputTextEt.setVisibility(View.VISIBLE);
         inputTextEt.setText(null);
-        Utility.showSoftKeyboard((Activity) DrawImageActivity.this, inputTextEt);
+        Utility.showSoftKeyboard(DrawImageActivity.this, inputTextEt);
 
 
     }
 
     private void AddTextonImage(String typedText) {
-        int color = getResources().getColor(R.color.colorWhite);
         TextToggle = false;
         mPhotoEditor.addText(typedText, SelectedColor);
     }
@@ -304,7 +303,7 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
     private void intializeDrawing() {
 
         int initialcolor = colorPicker.intialColor();
-        if (initialcolor == Color.BLACK) {
+        if (initialcolor == Color.TRANSPARENT) {
             initialcolor = Color.WHITE;
         }
         mPhotoEditor.setBrushColor(initialcolor);
@@ -315,12 +314,23 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
             @Override
             public void onColorChange(int selectedColor) {
                 SelectedColor = selectedColor;
-                mPhotoEditor.setBrushColor(SelectedColor);
+                if(SelectedColor != Color.TRANSPARENT)
+                {
+                    mPhotoEditor.setBrushColor(SelectedColor);
+                    inputTextEt.setTextColor(selectedColor);
+                }
+                else
+                {
+                    SelectedColor = Color.WHITE;
+                    mPhotoEditor.setBrushColor(SelectedColor);
+                    inputTextEt.setTextColor(SelectedColor);
+                }
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (DrawWrappedIcon != null) {
-                            if (SelectedColor != Color.BLACK) {
+                            if (SelectedColor != Color.TRANSPARENT) {
                                 DrawableCompat.setTint(DrawWrappedIcon, SelectedColor);
                             } else {
                                 DrawableCompat.setTint(DrawWrappedIcon, Color.WHITE);
@@ -338,7 +348,7 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
     private void setupViews() {
         drawImageview = findViewById(R.id.drawImageView);
         inputTextEt = findViewById(R.id.add_text_et);
-
+        progressBar = findViewById(R.id.progressBarDraw);
     }
 
     @Override
@@ -378,27 +388,60 @@ public class DrawImageActivity extends AppCompatActivity implements OnPhotoEdito
     }
 
 
-
-
-
-
-
-    @SuppressLint("MissingPermission")
     private void save() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-        mPhotoEditor.saveAsFile(snippet.getImagePath(), new PhotoEditor.OnSaveListener() {
-            @Override
-            public void onSuccess(@NonNull String imagePath) {
-                Log.e("PhotoEditor", "Image Saved Successfully");
-                finish();
+            ActivityCompat.requestPermissions(DrawImageActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+        }
+        else
+        {
+            try
+            {
+                progressBar.bringToFront();
+                progressBar.setVisibility(View.VISIBLE);
+                mPhotoEditor.saveAsFile(snippet.getImagePath(), new PhotoEditor.OnSaveListener() {
+                    @Override
+                    public void onSuccess(@NonNull String imagePath) {
+                        progressBar.setVisibility(View.GONE);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Failed to save", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),"Please grant storage permission",Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.e("PhotoEditor", "Failed to save Image");
-                Toast.makeText(getApplicationContext(),"Failed to save",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_STORAGE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    save();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"This permission is required",Toast.LENGTH_SHORT).show();
+                }
+                return;
             }
-        });
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
     }
 
 }

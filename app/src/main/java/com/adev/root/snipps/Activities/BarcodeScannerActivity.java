@@ -112,7 +112,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 
     }
 
-
+//
 //    @Override
 //    public void handleResult(Result result) {
 //
@@ -123,14 +123,9 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 //        //mScannerView.resumeCameraPreview(this);
 //
 //            getBookDetailsByIsbn(isbn);
-//
-//
-//
-//
-//
 //    }
-//
-//
+
+
 
 
     private void getBookDetailsByIsbn(String isbn) {
@@ -187,10 +182,6 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
                 }
             });
             thread.start();
-
-
-
-
         }
         else
         {

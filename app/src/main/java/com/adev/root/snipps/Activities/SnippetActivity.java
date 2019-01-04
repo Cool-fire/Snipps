@@ -92,7 +92,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
         BookTitle = getIntent().getStringExtra("title");
         BookPosition = getIntent().getStringExtra("position");
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(BookTitle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -161,7 +161,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
         });
 
 
-        recyclerview1 = (RecyclerView)findViewById(R.id.recycler_view);
+        recyclerview1 = findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerview1.setLayoutManager(layoutManager);
 
@@ -170,7 +170,6 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
         recyclerview1.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerview1, new RecyclerTouchListener.Clicklistner() {
             @Override
             public void onclick(View view, int position) {
-                Log.d("TAG", "onclick() returned: " +position );
 
                 Intent intent1 = new Intent(SnippetActivity.this,OpenSnippetActivity.class);
                 long bookId = book.getId();
@@ -249,11 +248,11 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
 
 
     private void setupviews() {
-       cameraBttn = (com.github.clans.fab.FloatingActionButton)findViewById(R.id.camera);
-       galleryBttn = (com.github.clans.fab.FloatingActionButton)findViewById(R.id.browse);
-       fabmenu = (FloatingActionMenu)findViewById(R.id.fabmenu);
-       coordinatorlayout = (CoordinatorLayout)findViewById(R.id.coordinator);
-       snippetOutlineImg = (ImageView)findViewById(R.id.snippetOutline);
+       cameraBttn = findViewById(R.id.camera);
+       galleryBttn = findViewById(R.id.browse);
+       fabmenu = findViewById(R.id.fabmenu);
+       coordinatorlayout = findViewById(R.id.coordinator);
+       snippetOutlineImg = findViewById(R.id.snippetOutline);
     }
 
     @Override

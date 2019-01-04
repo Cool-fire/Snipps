@@ -58,14 +58,13 @@ public class AddSnippetActivity extends AppCompatActivity {
 
         addSnippetActivityPresenter = new AddSnippetActivityPresenter(view, realm);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setupviews();
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("New Snippet");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setupviews();
-        Log.d("TAG", "onCreate: "+croppedPath);
-
         try
         {
             Picasso.get().load(new File(croppedPath)).resize(800,800).centerInside().into(croppedimage);
@@ -136,10 +135,10 @@ public class AddSnippetActivity extends AppCompatActivity {
     }
 
     private void setupviews() {
-        snippetname = (TextInputEditText)findViewById(R.id.snippetName);
-        pageno = (TextInputEditText)findViewById(R.id.pageNo);
-        croppedimage = (ImageView)findViewById(R.id.croppedimageView);
-        doneBttn = (FloatingActionButton)findViewById(R.id.doneBTTN);
+        snippetname = findViewById(R.id.snippetName);
+        pageno = findViewById(R.id.pageNo);
+        croppedimage = findViewById(R.id.croppedimageView);
+        doneBttn = findViewById(R.id.doneBTTN);
     }
 
 

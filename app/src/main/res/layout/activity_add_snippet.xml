@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="Snippet Name" />
+            android:hint="@string/snippet_name" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -61,16 +61,14 @@
 
     <ImageView
         android:id="@+id/croppedimageView"
-        android:layout_width="match_parent"
+        android:layout_width="388dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
-        app:srcCompat="@drawable/barcodescanner" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/doneBTTN"

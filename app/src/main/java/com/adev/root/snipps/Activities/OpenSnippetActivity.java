@@ -1,17 +1,25 @@
 package com.adev.root.snipps.Activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,10 +68,14 @@ public class OpenSnippetActivity extends AppCompatActivity {
     private FloatingActionButton drawImageButton;
     private String position;
     private String BookId;
+    private FloatingActionButton notesButton;
+    private long id;
+    private Snippet realmSnippet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_open_snippet);
 
            Intent intent = getIntent();
@@ -79,10 +91,10 @@ public class OpenSnippetActivity extends AppCompatActivity {
         {
             snippetsList = book.getSnippetsList();
             snippet = snippetsList.get(Integer.valueOf(position));
+            id = snippet.getId();
         }
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-       // Log.d(TAG, "onCreate: "+snippet.getSnippetName());
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(bookTitle);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
@@ -115,6 +127,71 @@ public class OpenSnippetActivity extends AppCompatActivity {
                 drawOnImage();
             }
         });
+        notesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveNotes();
+            }
+        });
+    }
+
+    private void saveNotes() {
+        AlertDialog.Builder builder;
+
+        builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.notes_dialog,null);
+        builder.setView(dialogView);
+        final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
+        if(snippet.getNotes()!=null)
+        {
+            String note = snippet.getNotes().toString();
+            edt.setText(note);
+        }
+        builder.setTitle(R.string.Note).setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String notes = edt.getText().toString();
+                if(!notes.isEmpty())
+                {
+                    save(notes);
+                }
+                else{
+                    edt.setError("Notes Required");
+                }
+            }
+        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void save(final String notes) {
+
+        try{
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realmSnippet = realm.where(Snippet.class).equalTo("id", id).findFirst();
+                    realmSnippet.setNotes(notes);
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(getApplicationContext(),"notes saved",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -122,7 +199,6 @@ public class OpenSnippetActivity extends AppCompatActivity {
         super.onResume();
         File newImageFile = new File(snippet.getImagePath());
         Picasso.get().load(newImageFile).memoryPolicy(MemoryPolicy.NO_CACHE).resize(1500,1500).centerInside().into(snippetImage);
-//        Picasso.get().invalidate(newImageFile);
     }
 
     private void drawOnImage() {
@@ -143,7 +219,6 @@ public class OpenSnippetActivity extends AppCompatActivity {
             Task<FirebaseVisionText> result = detector.detectInImage(image).addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
                 @Override
                 public void onSuccess(FirebaseVisionText firebaseVisionText) {
-                   // Toast.makeText(getApplicationContext(),"Ocr Worked",Toast.LENGTH_SHORT).show();
                     for (FirebaseVisionText.Block block: firebaseVisionText.getBlocks()) {
                         Rect boundingBox = block.getBoundingBox();
                         Point[] cornerPoints = block.getCornerPoints();
@@ -151,7 +226,6 @@ public class OpenSnippetActivity extends AppCompatActivity {
                         OcrText[0] = OcrText[0] + "\n"+text;
 
                     }
-                    Log.d(TAG, "onSuccess: "+OcrText[0]);
                     if(OcrText[0] != "") {
 
                         Intent intent = new Intent(OpenSnippetActivity.this, OcrshowActivity.class);
@@ -170,7 +244,7 @@ public class OpenSnippetActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     progressDialog.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"error occured",Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (IOException e) {
@@ -180,15 +254,16 @@ public class OpenSnippetActivity extends AppCompatActivity {
     }
 
     private void setupviews() {
-        snippetImage = (PhotoView)findViewById(R.id.snippetIMG);
-        snippetName = (TextView)findViewById(R.id.snippetNameTV);
-        snippetPage = (TextView)findViewById(R.id.snippetPageNumberTV);
-        snippetTime = (TextView)findViewById(R.id.snippetDateAddedTV);
-        fabmenu = (FloatingActionMenu)findViewById(R.id.fabmenusnippet);
-        snippetDetailsView = (RelativeLayout)findViewById(R.id.snippetDetailsView);
-        OcrButton = (FloatingActionButton)findViewById(R.id.ocr);
-        progressDialog = (ProgressBar)findViewById(R.id.progressDialog);
-        drawImageButton = (FloatingActionButton)findViewById(R.id.draw_image);
+        snippetImage = findViewById(R.id.snippetIMG);
+        snippetName = findViewById(R.id.snippetNameTV);
+        snippetPage = findViewById(R.id.snippetPageNumberTV);
+        snippetTime = findViewById(R.id.snippetDateAddedTV);
+        fabmenu = findViewById(R.id.fabmenusnippet);
+        snippetDetailsView = findViewById(R.id.snippetDetailsView);
+        OcrButton = findViewById(R.id.ocr);
+        notesButton = findViewById(R.id.write_description);
+        progressDialog = findViewById(R.id.progressDialog);
+        drawImageButton = findViewById(R.id.draw_image);
         snippetImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -216,4 +291,6 @@ public class OpenSnippetActivity extends AppCompatActivity {
         finish();
         return super.onSupportNavigateUp();
     }
+
+
 }

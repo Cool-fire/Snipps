@@ -34,7 +34,7 @@
         <activity
             android:name=".Activities.BooksActivity"
             android:label="@string/app_name"
-            android:theme="@style/ActivityTheme"></activity>
+            android:theme="@style/ActivityTheme" />
         <activity
             android:name=".Activities.NewBookActivity"
             android:label="@string/title_activity_new_book"
@@ -49,7 +49,7 @@
         <activity
             android:name=".Activities.SnippetActivity"
             android:label="@string/title_activity_snippet"
-            android:theme="@style/ActivityTheme" />
+            android:theme="@style/ActivityTheme"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -74,10 +74,12 @@
         <activity
             android:name=".Activities.OcrshowActivity"
             android:theme="@style/OcrActivityTheme" />
-        <activity android:name=".Activities.DrawImageActivity"
+        <activity
+            android:name=".Activities.DrawImageActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/OpenActivityTheme"/>
+            android:theme="@style/OpenActivityTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".NotesActivity" android:theme="@android:style/Theme.Holo.Dialog"></activity>
     </application>
 
 </manifest>

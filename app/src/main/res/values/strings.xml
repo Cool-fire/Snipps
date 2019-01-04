@@ -1,22 +1,20 @@
 <resources>
     <string name="app_name">snipps</string>
-    <string name="title_activity_books">BooksActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Snipps</string>
     <string name="nav_header_subtitle">Digitize your books and documents</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_addbooks">AddbooksActivity</string>
     <string name="title_activity_new_book">NewBookActivity</string>
     <string name="newBook">New Book</string>
     <string name="BookAuthor">Author</string>
     <string name="BookTitle">Title</string>
-    <string name="title_activity_new_snippet">NewSnippetActivity</string>
     <string name="title_activity_snippet">SnippetActivity</string>
     <string name="draw">draw</string>
     <string name="sure">Are you sure?</string>
     <string name="overwritesnippet">This will permanently overwrite the original snippet</string>
     <string name="save">save</string>
     <string name="cancel">cancel</string>
+    <string name="share">share</string>
+    <string name="Note">Take a Note</string>
+    <string name="snippet_name">Snippet Name</string>
 </resources>
