@@ -77,7 +77,6 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
     private SnippetAdapter mAdapter;
     private FloatingActionMenu fabmenu;
     private CoordinatorLayout coordinatorlayout;
-    private Object busEventListener;
     private int Position;
     private String mPhotoPathString;
     private ImageView snippetOutlineImg;
@@ -171,17 +170,10 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
             @Override
             public void onclick(View view, int position) {
 
-                Intent intent1 = new Intent(SnippetActivity.this,OpenSnippetActivity.class);
-                long bookId = book.getId();
-                intent1.putExtra("snippetPosition",Integer.toString(position));
-                intent1.putExtra("bookId",String.valueOf(bookId));
-
-                startActivity(intent1);
             }
 
             @Override
             public void onLongClick(View view, int position) {
-
                 Position = position;
                 showPopup(view);
             }
@@ -191,7 +183,6 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
 
             }
         }));
-
 
 
 
@@ -215,7 +206,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
         {
             snippetOutlineImg.setVisibility(View.GONE);
         }
-        mAdapter = new SnippetAdapter(book);
+        mAdapter = new SnippetAdapter(book,SnippetActivity.this);
         recyclerview1.setAdapter(mAdapter);
 
     }
@@ -229,7 +220,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
         {
             snippetOutlineImg.setVisibility(View.GONE);
         }
-        mAdapter = new SnippetAdapter(book);
+        mAdapter = new SnippetAdapter(book,SnippetActivity.this);
         recyclerview1.setAdapter(mAdapter);
 
     }

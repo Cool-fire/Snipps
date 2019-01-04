@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.adev.root.snipps.R;
+
 import static android.support.constraint.Constraints.TAG;
 
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
@@ -65,12 +67,14 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
         View child = rv.findChildViewUnder(e.getX(),e.getY());
 
 
-    //    Log.d(TAG, "onInterceptTouchEvent() returned: " + e.getAction());
         if(child!=null && clicklistner!=null && gestureDetector.onTouchEvent(e) )
         {
-
             clicklistner.onclick(child,rv.getChildAdapterPosition(child));
         }
+
+
+
+
 
         return false;
 
@@ -91,5 +95,5 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
         void onLongClick(View view,int position);
 
         void onDoubleTap(View view,int position);
-    }
+        }
 }

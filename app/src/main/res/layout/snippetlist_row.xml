@@ -8,6 +8,7 @@
     android:elevation="20dp">
 
     <LinearLayout
+        android:id="@+id/snippetListlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -64,14 +65,15 @@
                 />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/notesBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="18dp"
-                app:srcCompat="@drawable/ic_bookmark" />
+                app:srcCompat="@drawable/gray_bookmark"
+                android:visibility="invisible"/>
 
 
         </RelativeLayout>
