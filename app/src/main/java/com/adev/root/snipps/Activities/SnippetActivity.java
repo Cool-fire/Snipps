@@ -53,7 +53,7 @@ import io.realm.RealmList;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
-public class SnippetActivity extends AppCompatActivity implements SnippetActivityView{
+public class SnippetActivity extends AppCompatActivity implements SnippetActivityView {
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 10000;
     private static final int RESULT_LOAD_IMG = 22222;
@@ -111,8 +111,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
         context = getApplicationContext();
         Snippetpresenter = new SnippetActivityPresenter(view, context);
 
-        if(savedInstanceState!=null)
-        {
+        if (savedInstanceState != null) {
             mPhotoPathString = savedInstanceState.getString("imagePath");
         }
 
@@ -120,13 +119,12 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
             @Override
             public void onClick(View view) {
 
-                if (ContextCompat.checkSelfPermission(SnippetActivity.this,Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(SnippetActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
 
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(SnippetActivity.this, Manifest.permission.CAMERA))
-                    {
-                       Toast.makeText(getApplicationContext(),"Grant Permission to access camera",Toast.LENGTH_SHORT).show();
-                       callForPermissions();
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(SnippetActivity.this, Manifest.permission.CAMERA)) {
+                        Toast.makeText(getApplicationContext(), "Grant Permission to access camera", Toast.LENGTH_SHORT).show();
+                        callForPermissions();
 
                     }
 //                    else if(!ActivityCompat.shouldShowRequestPermissionRationale(SnippetActivity.this, Manifest.permission.CAMERA))
@@ -136,24 +134,22 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
                     else {
                         callForPermissions();
                     }
-                }
-                else {
-                  //  Log.d("TAG", "onA: camera ");
+                } else {
                     dispatchTakePictureIntent();
                     fabmenu.close(true);
                 }
-                
-               
+
+
             }
         });
 
         galleryBttn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent PhotoPickIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-              //  PhotoPickIntent.setType("image/*");
+                Intent PhotoPickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                //  PhotoPickIntent.setType("image/*");
                 Log.d("TAG", "onA: gallery ");
-                startActivityForResult(PhotoPickIntent,RESULT_LOAD_IMG);
+                startActivityForResult(PhotoPickIntent, RESULT_LOAD_IMG);
                 Log.d("TAG", "onA: galleryit ");
                 fabmenu.close(true);
             }
@@ -163,7 +159,6 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
         recyclerview1 = findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerview1.setLayoutManager(layoutManager);
-
 
 
         recyclerview1.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerview1, new RecyclerTouchListener.Clicklistner() {
@@ -185,7 +180,6 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
         }));
 
 
-
     }
 
     private RealmList<Snippet> getSortedBooks() {
@@ -202,11 +196,10 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
 
         super.onStart();
         int noOfSnippets = book.getSnippetsList().size();
-        if(noOfSnippets>0)
-        {
+        if (noOfSnippets > 0) {
             snippetOutlineImg.setVisibility(View.GONE);
         }
-        mAdapter = new SnippetAdapter(book,SnippetActivity.this);
+        mAdapter = new SnippetAdapter(book, SnippetActivity.this);
         recyclerview1.setAdapter(mAdapter);
 
     }
@@ -216,19 +209,13 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
 
         super.onResume();
         int noOfSnippets = book.getSnippetsList().size();
-        if(noOfSnippets>0)
-        {
+        if (noOfSnippets > 0) {
             snippetOutlineImg.setVisibility(View.GONE);
         }
-        mAdapter = new SnippetAdapter(book,SnippetActivity.this);
+        mAdapter = new SnippetAdapter(book, SnippetActivity.this);
         recyclerview1.setAdapter(mAdapter);
 
     }
-
-
-
-
-
 
     private void callForPermissions() {
         ActivityCompat.requestPermissions(SnippetActivity.this,
@@ -237,21 +224,19 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
 
     }
 
-
     private void setupviews() {
-       cameraBttn = findViewById(R.id.camera);
-       galleryBttn = findViewById(R.id.browse);
-       fabmenu = findViewById(R.id.fabmenu);
-       coordinatorlayout = findViewById(R.id.coordinator);
-       snippetOutlineImg = findViewById(R.id.snippetOutline);
+        cameraBttn = findViewById(R.id.camera);
+        galleryBttn = findViewById(R.id.browse);
+        fabmenu = findViewById(R.id.fabmenu);
+        coordinatorlayout = findViewById(R.id.coordinator);
+        snippetOutlineImg = findViewById(R.id.snippetOutline);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if(id == android.R.id.home)
-        {
+        if (id == android.R.id.home) {
             this.finish();
         }
 
@@ -268,7 +253,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
                 photoFile = createImageFile();
 
             } catch (IOException ex) {
-                Toast.makeText(getApplicationContext(),"Error Creating file",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error Creating file", Toast.LENGTH_SHORT).show();
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -290,95 +275,75 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
                 imageFileName, ".jpg", storageDir
         );
         mCurrentPhotoPath = image.getAbsolutePath();
-        mPhotoPathString = mCurrentPhotoPath.toString();
-        Log.d("TAG", "createImageFile: "+mCurrentPhotoPath);
+        mPhotoPathString = mCurrentPhotoPath;
         return image;
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("imagePath",mPhotoPathString);
+        outState.putString("imagePath", mPhotoPathString);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_TAKE_PHOTO) {
 
-        Log.d("TAG", "onActivityResult: "+requestCode);
-
-            if(requestCode == REQUEST_TAKE_PHOTO)
-            {
-
-                if(resultCode == RESULT_CANCELED)
-                {
-                    try
-                    {
-                        image.delete();
-                    }
-                    catch (Exception e){}
-
-                }
-                if(resultCode == RESULT_OK)
-                {
-
-                        Intent intent = new Intent(SnippetActivity.this, CropActivity.class);
-                        intent.putExtra("booktitle",BookTitle);
-                        intent.putExtra("position",BookPosition);
-                        intent.putExtra("PhotoUri", photoURI);
-                        intent.putExtra("photoPath",mPhotoPathString);
-                        startActivity(intent);
-
+            if (resultCode == RESULT_CANCELED) {
+                try {
+                    image.delete();
+                } catch (Exception e) {
                 }
 
             }
+            if (resultCode == RESULT_OK) {
 
-            else if(requestCode == RESULT_LOAD_IMG)
-            {
-
-
-                    try {
-                        final Uri imageUri = data.getData();
-                        Intent intent = new Intent(SnippetActivity.this, CropActivity.class);
-                        intent.putExtra("booktitle",BookTitle);
-                        intent.putExtra("position",BookPosition);
-                        intent.putExtra("PhotoUri", imageUri);
-                        String imagePath = getPhotoPathFromGallery(imageUri).toString();
-                        File imageFile = new File(imagePath);
-                        if(imageFile.exists())
-                        {
-                            //Toast.makeText(getApplicationContext(),"File loaded",Toast.LENGTH_SHORT).show();
-                            intent.putExtra("photoPath",imagePath);
-                            startActivity(intent);
-                            Log.d("TAG", "onActivityResult: "+imageUri.getPath());
-                        }
-                        else
-                        {
-                            Snackbar.make(coordinatorlayout,"File Doesn't Exists",Snackbar.LENGTH_SHORT).show();
-                        }
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-
-                    }
+                Intent intent = new Intent(SnippetActivity.this, CropActivity.class);
+                intent.putExtra("booktitle", BookTitle);
+                intent.putExtra("position", BookPosition);
+                intent.putExtra("PhotoUri", photoURI);
+                intent.putExtra("photoPath", mPhotoPathString);
+                startActivity(intent);
 
             }
+
+        } else if (requestCode == RESULT_LOAD_IMG) {
+
+
+            try {
+                final Uri imageUri = data.getData();
+                Intent intent = new Intent(SnippetActivity.this, CropActivity.class);
+                intent.putExtra("booktitle", BookTitle);
+                intent.putExtra("position", BookPosition);
+                intent.putExtra("PhotoUri", imageUri);
+                String imagePath = getPhotoPathFromGallery(imageUri);
+                File imageFile = new File(imagePath);
+                if (imageFile.exists()) {
+                    intent.putExtra("photoPath", imagePath);
+                    startActivity(intent);
+                } else {
+                    Snackbar.make(coordinatorlayout, "File Doesn't Exists", Snackbar.LENGTH_SHORT).show();
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+        }
 
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode)
-        {
-            case MY_PERMISSIONS_REQUEST_CAMERA:
-            {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                   Toast.makeText(getApplicationContext(),"Permission Granted",Toast.LENGTH_SHORT).show();
-                   dispatchTakePictureIntent();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Requires camera permission for functionality",Toast.LENGTH_SHORT).show();
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                    dispatchTakePictureIntent();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Requires camera permission", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -392,7 +357,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
             return null;
         }
 
-        String[] projection = { MediaStore.Images.Media.DATA };
+        String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null); //Since manageQuery is deprecated
         if (cursor != null) {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -410,7 +375,7 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
             String message = intent.getStringExtra("message");
             switch (message) {
                 case "snippet_added_snippets_activity":
-                    recyclerview1.scrollToPosition(mAdapter.getItemCount()-1);
+                    recyclerview1.scrollToPosition(mAdapter.getItemCount() - 1);
                     break;
             }
         }
@@ -445,26 +410,21 @@ public class SnippetActivity extends AppCompatActivity implements SnippetActivit
 
     private void deleteItem() {
 
-        try
-        {
+        try {
             RealmList<Snippet> snippetslist = getSortedBooks();
             Snippet snippet = snippetslist.get(Position);
             String Imagepath = snippet.getImagePath();
             File imageFile = new File(Imagepath);
-            if(imageFile.exists())
-            {
+            if (imageFile.exists()) {
                 imageFile.delete();
             }
-            mAdapter.deleteBook(realm,Position);
-            Snackbar.make(coordinatorlayout,"Snippet Deleted",Snackbar.LENGTH_SHORT).show();
+            mAdapter.deleteBook(realm, Position);
+            Snackbar.make(coordinatorlayout, "Snippet Deleted", Snackbar.LENGTH_SHORT).show();
             int noOfSnippets = book.getSnippetsList().size();
-            if(noOfSnippets==0)
-            {
+            if (noOfSnippets == 0) {
                 snippetOutlineImg.setVisibility(View.VISIBLE);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

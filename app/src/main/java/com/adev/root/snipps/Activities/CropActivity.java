@@ -49,7 +49,6 @@ public class CropActivity extends AppCompatActivity {
         BookTitle = getIntent().getStringExtra("booktitle");
 
         String path = getIntent().getStringExtra("photoPath");
-      //  Toast.makeText(getApplicationContext(),path,Toast.LENGTH_SHORT).show();
         imageFile = new File(path);
 
         setupviews();
@@ -75,7 +74,6 @@ public class CropActivity extends AppCompatActivity {
                 mCropView.saveAsync(croppedImageUri, mCropView.getCroppedBitmap(), new SaveCallback() {
                     @Override
                     public void onSuccess(Uri uri) {
-                     //   Toast.makeText(getApplicationContext(),"cropped",Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
                         Intent intent = new Intent(CropActivity.this,AddSnippetActivity.class);
                         intent.putExtra("croppedPath",croppedImageFile.getPath());
@@ -105,7 +103,7 @@ public class CropActivity extends AppCompatActivity {
                 }
                 catch (Exception e)
                 {
-                    Log.d("Crop activity", "error rotating");
+                    e.printStackTrace();
                 }
             }
         });
@@ -140,7 +138,6 @@ public class CropActivity extends AppCompatActivity {
         super.onDestroy();
         if(isFinishing())
         {
-            Log.d("tag", "onDestroy: ");
             imageFile.delete();
         }
 

@@ -105,7 +105,6 @@ public class BooksActivity extends AppCompatActivity implements NavigationView.O
 
             @Override
             public void onLongClick(View view, int position) {
-                // Toast.makeText(getApplicationContext(),books.get(position).getBookTitle(),Toast.LENGTH_SHORT).show();
                 Position = position;
                 showPopup(view);
             }

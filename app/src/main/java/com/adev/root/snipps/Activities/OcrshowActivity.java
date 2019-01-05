@@ -82,7 +82,7 @@ public class OcrshowActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(),"Sorry Can't share ",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Sorry no app found ",Toast.LENGTH_SHORT).show();
                 }
                 break;
 

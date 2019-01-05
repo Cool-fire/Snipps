@@ -29,11 +29,8 @@ public class BarcodescannerPresenter {
 
     private final BarcodescannerView view;
     private final Context context;
-    private static final int REQUEST_CAMERA = 1000;
     private final NewbookModelInterface model;
-    private static final String TAG = "presenter";
-    private NewBookUtil newBookUtil;
-    private NetworkInfo[] allNetworkInfo;
+
 
 
     public BarcodescannerPresenter(BarcodescannerView view, Context context, NewbookModelInterface model) {

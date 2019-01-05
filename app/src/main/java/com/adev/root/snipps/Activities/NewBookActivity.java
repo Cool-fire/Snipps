@@ -72,8 +72,8 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
                 String id = intent.getStringExtra("updatebookId");
                 long bookId = Long.parseLong(id);
                 Book book = realm.where(Book.class).equalTo("id", bookId).findFirst();
-                Author.setText(book.getBookAuthor().toString());
-                Title.setText(book.getBookTitle().toString());
+                Author.setText(book.getBookAuthor());
+                Title.setText(book.getBookTitle());
             }
 
         }
@@ -136,10 +136,7 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
 
         final Realm realm = Realm.getDefaultInstance();
         final String BookTitle = Title.getText().toString();
-        Log.d(TAG, "addBook: "+BookTitle);
-
         final String BookAuthor = Author.getText().toString();
-        Log.d(TAG, "addBook: "+BookAuthor);
 
         RealmupdateTransaction = realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
@@ -162,9 +159,6 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
                 Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
     }
 
     @Override
@@ -204,21 +198,17 @@ public class NewBookActivity extends AppCompatActivity implements NewBookActivit
                 presentId = realm.where(Book.class).max("id");
                 int id = getNextID(presentId);
                 book.setId(id);
-                Log.d(TAG, "execute: "+realm.where(Book.class).findAll());
                 realm.insertOrUpdate(book);
 
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
-
-              //  Toast.makeText(getApplicationContext(), "Succesfully added", Toast.LENGTH_SHORT).show();
                 goBack();
             }
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
-               // Log.d(TAG, "onError: "+error.getMessage());
                 Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_SHORT).show();
             }
         });

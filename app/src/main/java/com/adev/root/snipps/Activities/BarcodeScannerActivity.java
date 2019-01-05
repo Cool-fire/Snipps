@@ -112,22 +112,6 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 
     }
 
-//
-//    @Override
-//    public void handleResult(Result result) {
-//
-//        String isbnNo = result.getText();
-//        String isbn = "isbn:"+isbnNo;
-//       // Toast.makeText(BarcodeScannerActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
-//        //mScannerView.stopCamera();
-//        //mScannerView.resumeCameraPreview(this);
-//
-//            getBookDetailsByIsbn(isbn);
-//    }
-
-
-
-
     private void getBookDetailsByIsbn(String isbn) {
 
 
@@ -145,9 +129,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 
             @Override
             public void onFailure(Call<NewBookUtil> call, Throwable t) {
-
-                Log.d(TAG, "onFailure: Network Failure");
-                Toast.makeText(getApplicationContext(),"No Network",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"No Internet",Toast.LENGTH_SHORT).show();
                 finish();
 
             }
@@ -161,7 +143,6 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 
         if(newBookUtil.getItems()!=null)
         {
-            Log.d(TAG, "handleResultofBookDetails: "+newBookUtil.getItems().size());
             final String BookTitle = newBookUtil.getItems().get(0).getVolumeInfo().getTitle();
             final String BookAuthor = newBookUtil.getItems().get(0).getVolumeInfo().getAuthors().get(0);
 
@@ -186,7 +167,6 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
         else
         {
             Toast.makeText(getApplicationContext(),"No Results found",Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "handleResultofBookDetails: error no details found");
             finish();
         }
     
@@ -203,7 +183,6 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
                     startScan();
-                    Toast.makeText(BarcodeScannerActivity.this,"Permission Granted",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -240,7 +219,6 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
     public void handleResult(me.dm7.barcodescanner.zbar.Result result) {
         String isbnNo = result.getContents();
         String isbn = "isbn:"+isbnNo;
-        // Toast.makeText(BarcodeScannerActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
         //mScannerView.stopCamera();
         //mScannerView.resumeCameraPreview(this);
 

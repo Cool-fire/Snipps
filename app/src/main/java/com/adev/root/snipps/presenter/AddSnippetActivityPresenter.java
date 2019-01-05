@@ -45,9 +45,6 @@ public class AddSnippetActivityPresenter {
                 realmbooks = realm.where(Book.class).findAll();
                 sortedRealmBooks = realmbooks.sort("creationDate", Sort.DESCENDING);
                 book = sortedRealmBooks.get(Integer.valueOf(bookPosition));
-
-                Log.d("TAG", "execute: " + book.getSnippetsList().size());
-
                 presentId = realm.where(Snippet.class).max("id");
                 int id = getNextID(presentId);
                 Snippet snippet = realm.createObject(Snippet.class, id);
@@ -55,14 +52,12 @@ public class AddSnippetActivityPresenter {
                 snippet.setSnippetName(snippet_name);
                 snippet.setSnippetPageNo(Long.valueOf(page_no));
                 snippet.setDate(date);
-                Log.d("TAG", "execute: " + book.getBookTitle());
                 snippet = realm.copyToRealmOrUpdate(snippet);
                 book.getSnippetsList().add(snippet);
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
-                    Toast.makeText(view.getApplicationContext(),"Done",Toast.LENGTH_SHORT).show();
                     view.sendMessage();
                     view.finish();
             }

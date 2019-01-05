@@ -47,7 +47,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             holder.snippetNo.setText(Integer.toString(noOfSnippets));
             SimpleDateFormat month_date = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
             String month_name = month_date.format(book.getCreationDate());
-            holder.bookDate.setText(month_name.toString());
+            holder.bookDate.setText(month_name);
         }catch (Exception e)
         {
             e.printStackTrace();

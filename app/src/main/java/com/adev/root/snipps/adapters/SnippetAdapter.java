@@ -64,7 +64,7 @@ public class SnippetAdapter extends RecyclerView.Adapter<SnippetAdapter.ViewHold
         snippetimageProgress.setVisibility(View.VISIBLE);
         try
         {
-            imageFile = new File(snippet.getImagePath().toString());
+            imageFile = new File(snippet.getImagePath());
             if(imageFile.exists())
             {
                 Picasso.get().load(imageFile).memoryPolicy(MemoryPolicy.NO_CACHE).resize(context.getResources().getDimensionPixelSize(R.dimen.snippet_thumb_width),

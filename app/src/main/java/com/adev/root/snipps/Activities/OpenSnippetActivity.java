@@ -142,10 +142,10 @@ public class OpenSnippetActivity extends AppCompatActivity {
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.notes_dialog,null);
         builder.setView(dialogView);
-        final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
+        final EditText edt = dialogView.findViewById(R.id.edit1);
         if(snippet.getNotes()!=null)
         {
-            String note = snippet.getNotes().toString();
+            String note = snippet.getNotes();
             edt.setText(note);
         }
         builder.setTitle(R.string.Note).setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
