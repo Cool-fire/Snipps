@@ -77,10 +77,9 @@ public class OpenSnippetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_open_snippet);
-
-           Intent intent = getIntent();
-           position =  intent.getStringExtra("snippetPosition");
-           BookId = intent.getStringExtra("bookId");
+        Intent intent = getIntent();
+        position =  intent.getStringExtra("snippetPosition");
+        BookId = intent.getStringExtra("bookId");
 
         Realm.init(getApplicationContext());
 
