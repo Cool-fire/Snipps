@@ -7,11 +7,4 @@ Now digitize your documents, textbooks, journals, photographs, computer screens 
 
 Take the picture of the section that interest's you and let Snipps turn it into a snippet so that you can read your favourite parts in your mobile leaving the hassle of carrying books wherever you go.
 
-Features:
-
--Inbuilt barcode scanner to scan ISBN number of your book.
--Draw and highlight your favourite parts of the snippet.
--Inbuilt OCR to recognize the text and to share.
--Lots of different colours included for highlighting.
--Notes so that you won't forget anything.
 
