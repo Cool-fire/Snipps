@@ -1,6 +1,6 @@
 <h1 align="center">
 <br>
-  <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="Mediumizer">
+  <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher_logo.png" alt="Snipps">
 <br>
 <br>
 Snipps
@@ -29,8 +29,11 @@ Available in Play Store
 ## Screenshots
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/25877454/71652656-06522580-2d4d-11ea-87ad-3ddceb14aea2.jpg" width = "270" height="540" alt="Home">
-  <img src="https://user-images.githubusercontent.com/25877454/71652741-9abc8800-2d4d-11ea-95dc-7b9dab511d69.jpg" width="270" height="540" alt="Sharing">
+  <img src="https://user-images.githubusercontent.com/25877454/71763051-57a11700-2efd-11ea-89be-96515d9abe67.png" width = "270" height="540" alt="Home">
+  <img src="https://user-images.githubusercontent.com/25877454/71763052-57a11700-2efd-11ea-987f-3a0c77dc48ad.png" width="270" height="540" alt="Sharing">
+    <img src="https://user-images.githubusercontent.com/25877454/71763054-57a11700-2efd-11ea-9722-6b2435f7305b.pn" width = "270" height="540" alt="Home">
+  <img src="https://user-images.githubusercontent.com/25877454/71763055-5839ad80-2efd-11ea-96c8-30a9e1cc8090.png" width="270" height="540" alt="Sharing">
+    <img src="https://user-images.githubusercontent.com/25877454/71763056-5839ad80-2efd-11ea-8856-f22017a141ac.png" width = "270" height="540" alt="Home">
 </p>
 
 
